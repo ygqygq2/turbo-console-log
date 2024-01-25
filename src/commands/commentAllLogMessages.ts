@@ -14,6 +14,7 @@ export function commentAllLogMessagesCommand(): Command {
       jsDebugMessage: DebugMessage,
       args?: unknown[],
     ) => {
+      // 获取要使用的logFunction
       function logFunctionToUse(): string {
         if (
           args &&
@@ -39,12 +40,14 @@ export function commentAllLogMessagesCommand(): Command {
         return;
       }
       const document: vscode.TextDocument = editor.document;
+      // 检测所有log消息
       const logMessages: Message[] = jsDebugMessage.detectAll(
         document,
         logFunctionToUse(),
         logMessagePrefix,
         delimiterInsideMessage,
       );
+      // 在编辑器中添加注释
       editor.edit((editBuilder) => {
         logMessages.forEach(({ spaces, lines }) => {
           lines.forEach((line: vscode.Range) => {
