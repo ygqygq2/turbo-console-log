@@ -6,7 +6,7 @@ import {
   expectActiveTextEditorWithFile,
   documentLinesChanged,
 } from '../../helpers';
-import { ProgrammingLanguage } from '../../../../entities';
+import {ProgrammingLanguage} from '@/entities';
 
 export default (): void => {
   describe('Comment log messages with the default log function', () => {
