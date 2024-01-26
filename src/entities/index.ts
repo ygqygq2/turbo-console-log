@@ -1,16 +1,15 @@
-import { BlockType } from './extension/blockType';
-import { Message } from './extension/message';
-import { ExtensionProperties } from './extension/extensionProperties';
-import { BracketType } from './extension/bracketType';
+import { BracketType, LogMessageType, ProgrammingLanguage } from './extension/enums';
 import {
-  LogMessageType,
-  LogMessage,
+  BlockType,
+  Command,
+  ExtensionProperties,
+  LogBracket,
   LogContextMetadata,
-} from './extension/logMessage';
-import { LogBracket } from './extension/logBracket';
-import { Command } from './extension/Command';
-import { MultilineContextVariable } from './extension/MultilineContextVariable';
-import { ProgrammingLanguage } from './extension/ProgrammingLanguage';
+  LogMessage,
+  Message,
+  MultilineContextVariable,
+} from './extension/types';
+
 export {
   BlockType,
   BracketType,

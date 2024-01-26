@@ -10,8 +10,8 @@ export default (): void => {
         `const x = someFunc()`,
         `const myVar = someFunc(1, true, false);`,
         `const myVar = someFunc(
-              1, 
-              true, 
+              1,
+              true,
               false
             );`,
         `const x = function () {`,
@@ -25,9 +25,7 @@ export default (): void => {
       ];
       functionsAssignmentsLOCs.forEach((functionsAssignmentsLOC) => {
         expect(
-          helpers.jsLineCodeProcessing.isFunctionAssignedToVariable(
-            functionsAssignmentsLOC,
-          ),
+          helpers.jsLineCodeProcessing.isFunctionAssignedToVariable(functionsAssignmentsLOC),
         ).to.equal(true);
       });
     });

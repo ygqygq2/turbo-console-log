@@ -1,9 +1,6 @@
-import { LineCodeClassProcessing } from './lineCodeClassProcessing';
-import { LineCodeFunctionProcessing } from './lineCodeFunctionProcessing';
+import { LineCodeClassProcessing, LineCodeFunctionProcessing } from './types';
 
-export interface LineCodeProcessing
-  extends LineCodeClassProcessing,
-    LineCodeFunctionProcessing {
+export interface LineCodeProcessing extends LineCodeClassProcessing, LineCodeFunctionProcessing {
   isAssignedToVariable(loc: string): boolean;
   isAffectationToVariable(loc: string): boolean;
   isObjectLiteralAssignedToVariable(loc: string): boolean;

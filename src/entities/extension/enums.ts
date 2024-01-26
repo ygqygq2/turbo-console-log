@@ -1,3 +1,20 @@
+export enum ProgrammingLanguage {
+  JAVASCRIPT = 'js',
+}
+
+export enum enumLogType {
+  log = 'log',
+  warn = 'warn',
+  error = 'error',
+  debug = 'debug',
+  table = 'table',
+}
+
+export enum BracketType {
+  PARENTHESIS = 'PARENTHESIS', // ( )
+  CURLY_BRACES = 'CURLY_BRACES', // { }
+}
+
 export enum LogMessageType {
   ArrayAssignment = 'ArrayAssignment',
   Decorator = 'Decorator',
@@ -11,18 +28,3 @@ export enum LogMessageType {
   PrimitiveAssignment = 'PrimitiveAssignment',
   Ternary = 'Ternary',
 }
-
-export type LogContextMetadata = {
-  openingContextLine: number;
-  closingContextLine: number;
-  deepObjectLine: number;
-  deepObjectPath: string;
-};
-export type NamedFunctionMetadata = {
-  line: number;
-};
-
-export type LogMessage = {
-  logMessageType: LogMessageType;
-  metadata?: LogContextMetadata | NamedFunctionMetadata | unknown;
-};

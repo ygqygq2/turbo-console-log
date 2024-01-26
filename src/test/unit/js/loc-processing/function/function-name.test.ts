@@ -103,9 +103,7 @@ export default (): void => {
         },
       ];
       namedFunctionsLOCs.forEach(({ loc, expectedFunctionName }) => {
-        expect(helpers.jsLineCodeProcessing.getFunctionName(loc)).to.equal(
-          expectedFunctionName,
-        );
+        expect(helpers.jsLineCodeProcessing.getFunctionName(loc)).to.equal(expectedFunctionName);
       });
     });
   });
