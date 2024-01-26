@@ -1,5 +1,5 @@
 import { DebugMessage } from '../../debug-message';
-import { LogMessageType, enumLogType } from './enums';
+import { LogMessageType,  } from './enums';
 import { Range } from 'vscode';
 
 export type Command = {
@@ -21,14 +21,11 @@ export type ExtensionProperties = {
   logMessagePrefix: string;
   logMessageSuffix: string;
   addSemicolonInTheEnd: boolean;
-  insertEnclosingClass: boolean;
-  insertEnclosingFunction: boolean;
   insertEmptyLineBeforeLogMessage: boolean;
   insertEmptyLineAfterLogMessage: boolean;
   delimiterInsideMessage: string;
   includeFileNameAndLineNum: boolean;
   quote: string;
-  logType: enumLogType;
   logFunction: string;
 };
 

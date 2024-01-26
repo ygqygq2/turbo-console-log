@@ -1,18 +1,24 @@
 import * as vscode from 'vscode';
 import { DebugMessage } from './debug-message';
-import { JSDebugMessage } from './debug-message/js';
 import { Command, ExtensionProperties } from './entities';
 import { getAllCommands } from './commands/';
-import { DebugMessageLine, LanguageProcessor } from './debug-message/types';
+import { LanguageProcessor } from './debug-message/types';
+import { GeneralDebugMessage } from './debug-message/DebugMessage';
+import { JavaScriptProcessor, PythonProcessor } from './debug-message/LanguageProcessor';
 
 // 导出一个函数，用于激活插件
 export function activate(): void {
-  // 创建一个行代码处理类
-  const GeneralLineCodeProcessing: LineCodeProcessing = new JSLineCodeProcessing();
-  // 创建一个DebugMessageLine类
-  const debugMessageLine: DebugMessageLine = new GeneralDebugMessageLine(GeneralLineCodeProcessing);
+  const fileType = detectFileType(); // 逻辑来确定文件类型
+  let processor: LanguageProcessor;
+
+  if (fileType === 'javascript') {
+    processor = new JavaScriptProcessor();
+  } else if (fileType === 'python') {
+    processor = new PythonProcessor();
+  }
+  processor = new JavaScriptProcessor();
   // 创建一个DebugMessage类
-  const generalDebugMessage: DebugMessage = new GeneralDebugMessage(generalLineCodeProcessing, debugMessageLine);
+  const generalDebugMessage: DebugMessage = new GeneralDebugMessage(processor, 1);
   // 获取配置信息
   const config: vscode.WorkspaceConfiguration =
     vscode.workspace.getConfiguration('turboConsoleLog');
@@ -43,4 +49,9 @@ function getExtensionProperties(workspaceConfig: vscode.WorkspaceConfiguration) 
     includeFileNameAndLineNum: workspaceConfig.includeFileNameAndLineNum ?? false,
     logFunction: workspaceConfig.logFunction ?? 'log',
   };
+}
+
+function detectFileType(): string | undefined {
+  const activeEditor = vscode.window.activeTextEditor;
+  return activeEditor?.document.languageId;
 }

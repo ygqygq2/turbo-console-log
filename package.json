@@ -130,7 +130,8 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "compile": "npm run esbuild-base -- --sourcemap",
-    "test": "ts-node -r tsconfig-paths/register src/test/runTests.ts",
+    "test": "vscode-test",
+    "test:suite": "ts-node -r tsconfig-paths/register src/test/runTests.ts",
     "test:unit": "mocha -r ts-node/register -r tsconfig-paths/register 'src/test/unit/**/*.test.ts'"
   },
   "devDependencies": {
@@ -153,6 +154,7 @@
     "glob": "^10.3.10",
     "mocha": "^10.2.0",
     "prettier": "^3.2.4",
+    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"

@@ -2,36 +2,38 @@ import * as path from 'path';
 import Mocha from 'mocha';
 import { glob } from 'glob';
 
-export async function run(): Promise<void> {
-  // Create the mocha test
+export async function run() {
+  // 创建 mocha 实例
   const mocha = new Mocha({
     ui: 'tdd',
     color: true,
   });
+
   mocha.timeout(10000);
+
   const testsRoot = path.resolve(__dirname, '..');
 
-  const tsFiles = await glob('**/**.test.ts');
-  console.log('🚀 ~ run ~ tsFiles:', tsFiles);
+  // 获取所有测试文件
+  const tsFiles = await glob('**/**.test.ts', { cwd: testsRoot });
+  console.log('获取到以下测试文件:');
+  console.log(tsFiles);
+
   return new Promise<void>((resolve, reject) => {
-    // Add files to the test suite
+    // 添加测试文件
     tsFiles.forEach((file) => {
-      const testFile = path.resolve(testsRoot, file);
-      mocha.addFile(testFile);
+      mocha.addFile(path.resolve(testsRoot, file));
     });
 
-    try {
-      // Run the mocha test
-      mocha.run((failures) => {
-        if (failures > 0) {
-          reject(new Error(`${failures} tests failed.`));
-        } else {
-          resolve();
-        }
-      });
-    } catch (err) {
-      console.error(err);
-      reject(err);
-    }
+    // 运行测试
+    mocha.run((failures) => {
+      if (failures > 0) {
+        reject();
+      } else {
+        resolve();
+      }
+    });
+  }).catch((err) => {
+    console.error(err);
+    return Promise.reject(err);
   });
 }

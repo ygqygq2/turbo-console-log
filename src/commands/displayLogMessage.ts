@@ -17,8 +17,8 @@ export function displayLogMessageCommand(): Command {
     handler: async (
       // 扩展属性
       extensionProperties: ExtensionProperties,
-      // js调试消息
-      jsDebugMessage: DebugMessage,
+      // 调试消息
+      debugMessage: DebugMessage,
     ) => {
       // 获取当前激活的文本编辑器
       const editor: vscode.TextEditor | undefined =
@@ -54,8 +54,8 @@ export function displayLogMessageCommand(): Command {
         if (selectedVar.trim().length !== 0) {
           // 使用编辑器编辑
           await editor.edit((editBuilder) => {
-            // 调用jsDebugMessage.msg函数
-            jsDebugMessage.msg(
+            // 调用debugMessage.msg函数
+            debugMessage.msg(
               editBuilder,
               document,
               selectedVar,
