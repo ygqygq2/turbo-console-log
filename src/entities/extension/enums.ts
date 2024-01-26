@@ -2,14 +2,6 @@ export enum ProgrammingLanguage {
   JAVASCRIPT = 'js',
 }
 
-export enum enumLogType {
-  log = 'log',
-  warn = 'warn',
-  error = 'error',
-  debug = 'debug',
-  table = 'table',
-}
-
 export enum BracketType {
   PARENTHESIS = 'PARENTHESIS', // ( )
   CURLY_BRACES = 'CURLY_BRACES', // { }

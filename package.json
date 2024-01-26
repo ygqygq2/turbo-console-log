@@ -48,16 +48,6 @@
           "default": false,
           "description": "Whether to add or not a semicolon in the end of the log message."
         },
-        "turboConsoleLog.insertEnclosingClass": {
-          "type": "boolean",
-          "default": true,
-          "description": "Whether to insert or not the enclosing class of the selected variable in the log message."
-        },
-        "turboConsoleLog.insertEnclosingFunction": {
-          "type": "boolean",
-          "default": true,
-          "description": "Whether to insert or not the enclosing function of the selected variable in the log message."
-        },
         "turboConsoleLog.insertEmptyLineBeforeLogMessage": {
           "type": "boolean",
           "default": false,
@@ -82,18 +72,6 @@
           ],
           "default": "\"",
           "description": "Double quotes, single quotes or backtick"
-        },
-        "turboConsoleLog.logType": {
-          "type": "string",
-          "enum": [
-            "log",
-            "warn",
-            "error",
-            "debug",
-            "table"
-          ],
-          "default": "log",
-          "description": "Select the log type"
         },
         "turboConsoleLog.logFunction": {
           "type": "string",
