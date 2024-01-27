@@ -1,7 +1,7 @@
 {
-  "name": "turbo-console-log",
-  "displayName": "Turbo Console Log",
-  "description": "Automating the process of writing meaningful log messages.",
+  "name": "turbo-print-log",
+  "displayName": "Turbo Console Log for more language",
+  "description": "选中变量，根据不同语言增加一行变量打印日志",
   "version": "3.0.0",
   "publisher": "ygqygq2",
   "engines": {
@@ -11,12 +11,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact",
-    "onLanguage:typescript",
-    "onLanguage:typescriptreact"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
@@ -40,7 +35,7 @@
         },
         "turboConsoleLog.includeFileNameAndLineNum": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Whether to include the file name and the line number of the log message."
         },
         "turboConsoleLog.addSemicolonInTheEnd": {
@@ -75,15 +70,15 @@
         },
         "turboConsoleLog.logFunction": {
           "type": "string",
-          "default": "log",
-          "description": "Specify a log function (when specified logType will be ignored)"
+          "default": "",
+          "description": "Specify a log function"
         }
       }
     },
     "commands": [
       {
         "command": "turboConsoleLog.displayLogMessage",
-        "title": "Turbo Console Log: Display Log Message"
+        "title": "Turbo Console Log: Display Log Message(unselected any thing, update line number)"
       },
       {
         "command": "turboConsoleLog.commentAllLogMessages",
@@ -157,6 +152,7 @@
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "lodash": "^4.17.21",
     "typescript": "^5.3.3"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
@@ -171,10 +167,7 @@
   "__metadata": {
     "id": "",
     "publisherDisplayName": "ygqygq2",
-    "publisherId": "",
+    "publisherId": "e0b1421e-635c-639a-85a0-8b271dcb3d11",
     "isPreReleaseVersion": false
-  },
-  "dependencies": {
-    "lodash": "^4.17.21"
   }
 }

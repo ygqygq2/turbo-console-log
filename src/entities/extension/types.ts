@@ -1,4 +1,3 @@
-import { DebugMessage } from '../../debug-message';
 import { LogMessageType,  } from './enums';
 import { Range } from 'vscode';
 
@@ -6,7 +5,6 @@ export type Command = {
   name: string;
   handler: (
     extensionProperties: ExtensionProperties,
-    debugMessage: DebugMessage,
     args?: unknown[],
   ) => Promise<void>;
 };

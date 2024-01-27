@@ -1,22 +1,20 @@
 import { Position, TextDocument, TextEditorEdit } from 'vscode';
 import { BracketType, ExtensionProperties, Message } from '../entities';
 import { LanguageProcessor } from './types';
-import { closingContextLine } from '@/utilities';
+import { closingContextLine } from '@/utils';
 import { omit } from 'lodash';
 
 // 导出抽象类DebugMessage
 export abstract class DebugMessage {
   // 行代码处理
   languageProcessor: LanguageProcessor;
-  // 调试消息行
-  debugMessageLine: number;
   // 构造函数
-  constructor(languageProcessor: LanguageProcessor, debugMessageLine: number) {
+  constructor(languageProcessor: LanguageProcessor) {
     this.languageProcessor = languageProcessor;
-    this.debugMessageLine = debugMessageLine;
   }
+
   // 返回消息
-  abstract msg(
+  abstract insertMessage(
     textEditor: TextEditorEdit,
     document: TextDocument,
     selectedVar: string,
@@ -24,6 +22,7 @@ export abstract class DebugMessage {
     tabSize: number,
     extensionProperties: ExtensionProperties,
   ): void;
+
   // 检测消息
   abstract detectAll(
     document: TextDocument,
@@ -31,10 +30,12 @@ export abstract class DebugMessage {
     logMessagePrefix: string,
     delimiterInsideMessage: string,
   ): Message[];
+
   // 返回行
   line(selectionLine: number): number {
     return selectionLine + 1;
   }
+
   // 返回消息前导空格
   spacesBeforeLogMsg(document: TextDocument, selectedVarLine: number, logMsgLine: number): string {
     const selectedVarTextLine = document.lineAt(selectedVarLine);
@@ -58,11 +59,16 @@ export abstract class DebugMessage {
     }
     return spacesBeforeSelectedVarLine;
   }
+
+  // 获取注释符号
+  getSingleLineCommentSymbol(): string {
+    return this.languageProcessor.getSingleLineCommentSymbol();
+  }
 }
 
 export class GeneralDebugMessage extends DebugMessage {
-  constructor(languageProcessor: LanguageProcessor, debugMessageLine: number) {
-    super(languageProcessor, debugMessageLine);
+  constructor(languageProcessor: LanguageProcessor) {
+    super(languageProcessor);
   }
   private baseDebuggingMsg(
     document: TextDocument,
@@ -80,6 +86,7 @@ export class GeneralDebugMessage extends DebugMessage {
       }${debuggingMsg}\n${insertEmptyLineAfterLogMessage ? '\n' : ''}`,
     );
   }
+
   // 构造调试消息
   private constructDebuggingMsg(
     extensionProperties: ExtensionProperties,
@@ -155,7 +162,7 @@ export class GeneralDebugMessage extends DebugMessage {
    * @param {ExtensionProperties} extensionProperties - 扩展属性
    * @returns {void}
    */
-  msg(
+  insertMessage(
     textEditor: TextEditorEdit,
     document: TextDocument,
     selectedVar: string,
@@ -195,6 +202,7 @@ export class GeneralDebugMessage extends DebugMessage {
       extensionProperties.insertEmptyLineAfterLogMessage,
     );
   }
+
   // 检测文档中的所有消息
   detectAll(
     document: TextDocument,
@@ -231,7 +239,7 @@ export class GeneralDebugMessage extends DebugMessage {
         }
         // 判断消息前导文本是否包含消息前导文本前缀
         if (
-          new RegExp(logMessagePrefix).test(msg) ||
+          new RegExp(logMessagePrefix).test(msg) &&
           new RegExp(delimiterInsideMessage).test(msg)
         ) {
           // 添加消息到消息数组

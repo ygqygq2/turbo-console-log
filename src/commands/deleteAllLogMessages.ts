@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { DebugMessage } from '../debug-message';
 import { Command, ExtensionProperties, Message } from '../entities';
+import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 // 导出一个函数，用于删除所有日志消息
 export function deleteAllLogMessagesCommand(): Command {
@@ -11,25 +11,19 @@ export function deleteAllLogMessagesCommand(): Command {
     // 命令处理函数
     handler: async (
       // 传入扩展属性
-      {
-        delimiterInsideMessage,
-        logMessagePrefix,
-        logFunction,
-      }: ExtensionProperties,
-      // 传入js调试消息
-      jsDebugMessage: DebugMessage,
+      { delimiterInsideMessage, logMessagePrefix, logFunction }: ExtensionProperties,
     ) => {
       // 获取当前激活的编辑器
-      const editor: vscode.TextEditor | undefined =
-        vscode.window.activeTextEditor;
+      const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
       // 如果没有激活的编辑器，则返回
       if (!editor) {
         return;
       }
+      const { debugMessage } = instanceDebugMessage(editor);
       // 获取当前文档
       const document: vscode.TextDocument = editor.document;
       // 检测所有日志消息
-      const logMessages: Message[] = jsDebugMessage.detectAll(
+      const logMessages: Message[] = debugMessage.detectAll(
         document,
         logFunction,
         logMessagePrefix,
