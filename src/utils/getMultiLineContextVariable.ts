@@ -1,5 +1,5 @@
 import { TextDocument } from 'vscode';
-import { BracketType, MultilineContextVariable } from '../entities';
+import { BracketType, MultilineContextVariable } from '../typings';
 import { locBrackets } from './locBrackets';
 import { closingContextLine } from './closingContextLine';
 
@@ -20,11 +20,7 @@ export function getMultiLineContextVariable(
     bracketType,
   );
   // 如果为内部作用域，并且括号类型相同，则返回null
-  if (
-    innerScope &&
-    openingBrackets !== 0 &&
-    openingBrackets === closingBrackets
-  ) {
+  if (innerScope && openingBrackets !== 0 && openingBrackets === closingBrackets) {
     return null;
   }
   // 当前行号
@@ -47,11 +43,7 @@ export function getMultiLineContextVariable(
     if (nbrOfOpenedBlockType === nbrOfClosedBlockType) {
       return {
         openingContextLine: currentLineNum,
-        closingContextLine: closingContextLine(
-          document,
-          currentLineNum,
-          bracketType,
-        ),
+        closingContextLine: closingContextLine(document, currentLineNum, bracketType),
       };
     }
     // 当前行号减一

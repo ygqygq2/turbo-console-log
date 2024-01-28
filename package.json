@@ -2,7 +2,7 @@
   "name": "turbo-print-log",
   "displayName": "Turbo Console Log for more language",
   "description": "选中变量，根据不同语言增加一行变量打印日志",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "publisher": "ygqygq2",
   "engines": {
     "vscode": "^1.85.0"
@@ -78,7 +78,11 @@
     "commands": [
       {
         "command": "turboConsoleLog.displayLogMessage",
-        "title": "Turbo Console Log: Display Log Message(unselected any thing, update line number)"
+        "title": "Turbo Console Log: Display Log Message"
+      },
+      {
+        "command": "turboConsoleLog.updateLineNumAllLogMessages",
+        "title": "Turbo Console Log: Update Line Number for All Log Messages"
       },
       {
         "command": "turboConsoleLog.commentAllLogMessages",
@@ -98,6 +102,11 @@
         "command": "turboConsoleLog.displayLogMessage",
         "key": "ctrl+alt+l",
         "mac": "ctrl+alt+l"
+      },
+      {
+        "command": "turboConsoleLog.updateLineNumAllLogMessages",
+        "key": "ctrl+alt+u",
+        "mac": "ctrl+alt+u"
       },
       {
         "command": "turboConsoleLog.commentAllLogMessages",
@@ -146,13 +155,14 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "glob": "^10.3.10",
+    "lodash": "^4.17.21",
     "mocha": "^10.2.0",
     "prettier": "^3.2.4",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "lodash": "^4.17.21",
     "typescript": "^5.3.3"
   },
   "license": "SEE LICENSE IN LICENSE.txt",

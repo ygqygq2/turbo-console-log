@@ -12,9 +12,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - run: npm ci
-      - run: npm i -g @vscode/vsce
-      - run: vsce package
+      - run: npm i -g @vscode/vsce pnpm
+      - run: pnpm install
+      - run: vsce package --no-dependencies
       - uses: actions/upload-artifact@v4.0.0
         with:
           path: "*.vsix"

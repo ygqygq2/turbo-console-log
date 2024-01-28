@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Command, ExtensionProperties, Message } from '../entities';
+import { Command, ExtensionProperties } from '../typings';
 import { getTabSize } from '../utils';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
@@ -57,39 +57,6 @@ export function displayLogMessageCommand(): Command {
               tabSize,
               extensionProperties,
             );
-          });
-        } else {
-          const {
-            logFunction,
-            logMessagePrefix,
-            delimiterInsideMessage,
-            includeFileNameAndLineNum,
-          } = extensionProperties;
-          // 没有行号，直接退出
-          if (!includeFileNameAndLineNum) {
-            return;
-          }
-          // 检测所有日志消息
-          const logMessages: Message[] = debugMessage.detectAll(
-            document,
-            logFunction,
-            logMessagePrefix,
-            delimiterInsideMessage,
-          );
-
-          // 遍历所有日志消息，并更新行号
-          const oldLineNum = new RegExp(`:(\\d+) ${delimiterInsideMessage}`);
-          editor.edit((editBuilder) => {
-            logMessages.forEach(({ spaces, lines }) => {
-              lines.forEach((line: vscode.Range) => {
-                editBuilder.delete(line);
-                const text = document
-                  .getText(line)
-                  .replace(oldLineNum, `:${line.start.line + 1} ${delimiterInsideMessage}`)
-                  .trim();
-                editBuilder.insert(new vscode.Position(line.start.line, 0), `${spaces}${text}\n`);
-              });
-            });
           });
         }
       }

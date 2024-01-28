@@ -1,15 +1,15 @@
 import { Position, TextDocument, TextEditorEdit } from 'vscode';
-import { BracketType, ExtensionProperties, Message } from '../entities';
-import { LanguageProcessor } from './types';
 import { closingContextLine } from '@/utils';
 import { omit } from 'lodash';
+import { BracketType, ExtensionProperties, Message } from '../typings';
+import { LanguageProcessorUnion } from './LanguageProcessor';
 
 // 导出抽象类DebugMessage
 export abstract class DebugMessage {
   // 行代码处理
-  languageProcessor: LanguageProcessor;
+  languageProcessor: LanguageProcessorUnion;
   // 构造函数
-  constructor(languageProcessor: LanguageProcessor) {
+  constructor(languageProcessor: LanguageProcessorUnion) {
     this.languageProcessor = languageProcessor;
   }
 
@@ -26,7 +26,7 @@ export abstract class DebugMessage {
   // 检测消息
   abstract detectAll(
     document: TextDocument,
-    logFunction: string,
+    logFunctionByLanguageId: string,
     logMessagePrefix: string,
     delimiterInsideMessage: string,
   ): Message[];
@@ -67,7 +67,7 @@ export abstract class DebugMessage {
 }
 
 export class GeneralDebugMessage extends DebugMessage {
-  constructor(languageProcessor: LanguageProcessor) {
+  constructor(languageProcessor: LanguageProcessorUnion) {
     super(languageProcessor);
   }
   private baseDebuggingMsg(
@@ -94,9 +94,7 @@ export class GeneralDebugMessage extends DebugMessage {
     spacesBeforeMsg: string,
   ): string {
     const { logMessagePrefix, quote, addSemicolonInTheEnd, wrapLogMessage } = extensionProperties;
-    const logStatement = this.languageProcessor.getPrintStatement(
-      `${quote}${logMessagePrefix} ${'-'.repeat(debuggingMsgContent.length - 16)}${logMessagePrefix}${quote}`,
-    );
+    const logStatement = `${this.languageProcessor.getPrintString()}${quote}${logMessagePrefix} ${'-'.repeat(debuggingMsgContent.length - 16)}${logMessagePrefix}${quote}`;
     const wrappingMsg = `${logStatement}${addSemicolonInTheEnd ? ';' : ''}`;
     const debuggingMsg: string = wrapLogMessage
       ? `${spacesBeforeMsg}${wrappingMsg}\n${spacesBeforeMsg}${debuggingMsgContent}\n${spacesBeforeMsg}${wrappingMsg}`
@@ -132,8 +130,7 @@ export class GeneralDebugMessage extends DebugMessage {
       insertEmptyLineBeforeLogMessage,
       logMessageSuffix,
     } = extensionProperties;
-
-    const printFunc = logFunction ? logFunction : '';
+    const logFunctionByLanguageId = this.languageProcessor.getLogFunction(logFunction);
     const content = `${quote}${logMessagePrefix}${
       logMessagePrefix.length !== 0 && logMessagePrefix !== `${delimiterInsideMessage} `
         ? ` ${delimiterInsideMessage} `
@@ -144,11 +141,11 @@ export class GeneralDebugMessage extends DebugMessage {
             lineOfLogMsg + (insertEmptyLineBeforeLogMessage ? 2 : 1)
           } ${delimiterInsideMessage} `
         : ''
-    }${selectedVar}${logMessageSuffix}${quote}, ${selectedVar}`;
-    if (!printFunc) {
+    }${selectedVar}${logMessageSuffix}${quote}${this.languageProcessor.getConcatenatedString()} ${this.languageProcessor.variableToString(selectedVar)}`;
+    if (!logFunctionByLanguageId) {
       return this.languageProcessor.getPrintStatement(content, semicolon);
     }
-    return `${logFunction}(${content})${semicolon}`;
+    return `${logFunctionByLanguageId}(${content})${semicolon}`;
   }
 
   /**
@@ -206,7 +203,7 @@ export class GeneralDebugMessage extends DebugMessage {
   // 检测文档中的所有消息
   detectAll(
     document: TextDocument,
-    logFunction: string,
+    logFunctionByLanguageId: string,
     logMessagePrefix: string,
     delimiterInsideMessage: string,
   ): Message[] {
@@ -217,7 +214,9 @@ export class GeneralDebugMessage extends DebugMessage {
     // 遍历文档
     for (let i = 0; i < documentNbrOfLines; i++) {
       // 创建正则表达式，用于匹配消息函数
-      const turboConsoleLogMessage = new RegExp(logFunction.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      const turboConsoleLogMessage = new RegExp(
+        logFunctionByLanguageId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+      );
       // 判断当前行文本是否包含消息函数
       if (turboConsoleLogMessage.test(document.lineAt(i).text)) {
         // 创建消息对象

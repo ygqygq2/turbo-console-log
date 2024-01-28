@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Command, ExtensionProperties, Message } from '../entities';
+import { Command, ExtensionProperties, Message } from '../typings';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 export function commentAllLogMessagesCommand(): Command {
@@ -9,24 +9,26 @@ export function commentAllLogMessagesCommand(): Command {
       { delimiterInsideMessage, logMessagePrefix, logFunction }: ExtensionProperties,
       args?: unknown[],
     ) => {
-      // 获取要使用的logFunction
-      function logFunctionToUse(): string {
-        if (args && args.length > 0 && typeof args[0] === 'object' && args[0] !== null) {
-          const firstArg = args[0] as Record<string, unknown>;
-          if ('logFunction' in firstArg && typeof firstArg.logFunction === 'string') {
-            return firstArg.logFunction;
-          }
-          return logFunction;
-        }
-        return logFunction;
-      }
-
       const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
       if (!editor) {
         return;
       }
 
       const { debugMessage } = instanceDebugMessage(editor);
+
+      // 获取要使用的logFunction
+      const logFunctionByLanguageId =
+        debugMessage.languageProcessor.getLogFunction(logFunction);
+      function logFunctionToUse(): string {
+        if (args && args.length > 0 && typeof args[0] === 'object' && args[0] !== null) {
+          const firstArg = args[0] as Record<string, unknown>;
+          if ('logFunction' in firstArg && typeof firstArg.logFunction === 'string') {
+            return firstArg.logFunction;
+          }
+        }
+        return logFunctionByLanguageId;
+      }
+
 
       const document: vscode.TextDocument = editor.document;
       // 检测所有log消息

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Command, ExtensionProperties } from './entities';
+import { Command, ExtensionProperties } from './typings';
 import { getAllCommands } from './commands/';
 
 // 导出一个函数，用于激活插件
@@ -26,12 +26,12 @@ function getExtensionProperties(workspaceConfig: vscode.WorkspaceConfiguration) 
     wrapLogMessage: workspaceConfig.wrapLogMessage ?? false,
     logMessagePrefix: workspaceConfig.logMessagePrefix ?? '🚀',
     logMessageSuffix: workspaceConfig.logMessageSuffix ?? ':',
-    addSemicolonInTheEnd: workspaceConfig.addSemicolonInTheEnd ?? false,
+    addSemicolonInTheEnd: workspaceConfig.addSemicolonInTheEnd ?? true,
     insertEmptyLineBeforeLogMessage: workspaceConfig.insertEmptyLineBeforeLogMessage ?? false,
     insertEmptyLineAfterLogMessage: workspaceConfig.insertEmptyLineAfterLogMessage ?? false,
     quote: workspaceConfig.quote ?? '"',
     delimiterInsideMessage: workspaceConfig.delimiterInsideMessage ?? '~',
     includeFileNameAndLineNum: workspaceConfig.includeFileNameAndLineNum ?? true,
-    logFunction: workspaceConfig.logFunction ?? 'log',
+    logFunction: workspaceConfig.logFunction ?? [],
   };
 }

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Command, ExtensionProperties, Message } from '../entities';
+import { Command, ExtensionProperties, Message } from '../typings';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 // 导出一个函数，用于删除所有日志消息
@@ -23,9 +23,10 @@ export function deleteAllLogMessagesCommand(): Command {
       // 获取当前文档
       const document: vscode.TextDocument = editor.document;
       // 检测所有日志消息
+      const logFunctionByLanguageId = debugMessage.languageProcessor.getLogFunction(logFunction);
       const logMessages: Message[] = debugMessage.detectAll(
         document,
-        logFunction,
+        logFunctionByLanguageId,
         logMessagePrefix,
         delimiterInsideMessage,
       );

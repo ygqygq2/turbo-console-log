@@ -1,17 +1,18 @@
-import { LogMessageType,  } from './enums';
+import { LogMessageType } from './enums';
 import { Range } from 'vscode';
 
 export type Command = {
   name: string;
-  handler: (
-    extensionProperties: ExtensionProperties,
-    args?: unknown[],
-  ) => Promise<void>;
+  handler: (extensionProperties: ExtensionProperties, args?: unknown[]) => Promise<void>;
 };
 
 export type LogBracket = {
   openingBrackets: number;
   closingBrackets: number;
+};
+
+export type languageLogFunction = {
+  [languageId: string]: string;
 };
 
 export type ExtensionProperties = {
@@ -24,7 +25,7 @@ export type ExtensionProperties = {
   delimiterInsideMessage: string;
   includeFileNameAndLineNum: boolean;
   quote: string;
-  logFunction: string;
+  logFunction: languageLogFunction[];
 };
 
 export type MultilineContextVariable = {

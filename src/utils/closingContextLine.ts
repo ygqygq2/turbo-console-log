@@ -1,5 +1,5 @@
 import { TextDocument } from 'vscode';
-import { BracketType } from '../entities';
+import { BracketType } from '../typings';
 import { locBrackets } from './locBrackets';
 
 // 导出一个函数，用于计算声明行后的关闭行

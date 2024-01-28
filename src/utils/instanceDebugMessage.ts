@@ -21,37 +21,37 @@ export const instanceDebugMessage = (editor: TextEditor) => {
   switch (languageId) {
     case 'javascript':
     case 'typescript':
-      processor = new JavaScriptProcessor();
+      processor = new JavaScriptProcessor(languageId);
       break;
     case 'python':
-      processor = new PythonProcessor();
+      processor = new PythonProcessor(languageId);
       break;
     case 'go':
-      processor = new GoProcessor();
+      processor = new GoProcessor(languageId);
       break;
     case 'java':
-      processor = new JavaProcessor();
+      processor = new JavaProcessor(languageId);
       break;
     case 'php':
-      processor = new PhpProcessor();
+      processor = new PhpProcessor(languageId);
       break;
     case 'ruby':
-      processor = new RubyProcessor();
+      processor = new RubyProcessor(languageId);
       break;
     case 'swift':
-      processor = new SwiftProcessor();
+      processor = new SwiftProcessor(languageId);
       break;
     case 'csharp':
-      processor = new CSharpProcessor();
+      processor = new CSharpProcessor(languageId);
       break;
     case 'shellscript':
-      processor = new ShellProcessor();
+      processor = new ShellProcessor(languageId);
       break;
     case 'perl':
-      processor = new PerlProcessor();
+      processor = new PerlProcessor(languageId);
       break;
     default:
-      processor = new JavaScriptProcessor();
+      processor = new JavaScriptProcessor(languageId);
   }
   const debugMessage = new GeneralDebugMessage(processor);
   return { debugMessage };
