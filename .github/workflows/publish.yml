@@ -18,6 +18,6 @@ jobs:
       - uses: actions/upload-artifact@v4.0.0
         with:
           path: "*.vsix"
-      - run: vsce publish -p $TOKEN
+      - run: vsce publish --no-dependencies -p $TOKEN
         env:
           TOKEN: ${{ secrets.VSCODE_PUBLISH_TOKEN }}

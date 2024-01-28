@@ -9,9 +9,17 @@
   },
   "icon": "images/icon.png",
   "categories": [
+    "Debuggers",
+    "Testing",
     "Other"
   ],
-  "activationEvents": [],
+  "keywords": [
+    "debuggers",
+    "testing"
+  ],
+  "activationEvents": [
+    "onLanguage"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
@@ -134,6 +142,8 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "compile": "npm run esbuild-base -- --sourcemap",
+    "package": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies",
     "test": "vscode-test",
     "test:suite": "ts-node -r tsconfig-paths/register src/test/runTests.ts",
     "test:unit": "mocha -r ts-node/register -r tsconfig-paths/register 'src/test/unit/**/*.test.ts'"
@@ -175,7 +185,7 @@
     "url": "https://github.com/ygqygq2/turbo-console-log"
   },
   "__metadata": {
-    "id": "",
+    "id": "ygqygq2.turbo-print-log",
     "publisherDisplayName": "ygqygq2",
     "publisherId": "e0b1421e-635c-639a-85a0-8b271dcb3d11",
     "isPreReleaseVersion": false

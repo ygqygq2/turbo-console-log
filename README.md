@@ -20,7 +20,7 @@ The log message will be inserted in the next line relative to the selected varia
 > * The log function and the content of the log message can be customized in the extension settings (see Settings section for more details).
 > * Multiple cursor selection is also supported.
 
-### 2. Updadte line number for log message in a file
+### 2. Update line number for log message in a file
 
 - Update the log message line number for all message
 

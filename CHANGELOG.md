@@ -18,7 +18,7 @@ All notable changes to the "turbo-console-log" extension will be documented in t
   }
 ```
 
-## 问题修复
+## 问题修复 🐛
 * fix: 含 `~` 代码对于调试日志判断不准确问题
 
 # [3.0.0]
