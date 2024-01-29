@@ -77,9 +77,11 @@
           "description": "Double quotes, single quotes or backtick"
         },
         "turboConsoleLog.logFunction": {
-          "type": "string",
-          "default": "",
-          "description": "Specify a log function"
+          "type": "object",
+          "default": {
+            "php": "echo"
+          },
+          "description": "Specify log function for language"
         }
       }
     },
@@ -146,7 +148,7 @@
     "publish": "vsce publish --no-dependencies",
     "test": "vscode-test",
     "test:suite": "ts-node -r tsconfig-paths/register src/test/runTests.ts",
-    "test:unit": "mocha -r ts-node/register -r tsconfig-paths/register 'src/test/unit/**/*.test.ts'"
+    "test:unit": "mocha -p src/test/tsconfig.json -r ts-node/register -r tsconfig-paths/register \"src/test/unit/**/*.test.ts\""
   },
   "devDependencies": {
     "@types/chai": "^4.3.11",
@@ -170,7 +172,6 @@
     "lodash": "^4.17.21",
     "mocha": "^10.2.0",
     "prettier": "^3.2.4",
-    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"

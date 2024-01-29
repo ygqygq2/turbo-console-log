@@ -25,7 +25,7 @@ export type ExtensionProperties = {
   delimiterInsideMessage: string;
   includeFileNameAndLineNum: boolean;
   quote: string;
-  logFunction: languageLogFunction[];
+  logFunction: languageLogFunction;
 };
 
 export type MultilineContextVariable = {

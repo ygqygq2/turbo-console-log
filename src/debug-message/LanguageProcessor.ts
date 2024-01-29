@@ -6,12 +6,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
 
   // 根据 languageId 获取对应的 logFunction
   getLogFunction(logFunction: ExtensionProperties['logFunction']): string {
-    if (Array.isArray(logFunction)) {
-      const logFunctionObj = logFunction.find((obj) =>
-        Object.prototype.hasOwnProperty.call(obj, this.languageId),
-      );
-      const logFunctionValue = logFunctionObj ? logFunctionObj[this.languageId] : undefined;
-      return logFunctionValue || '';
+    if (typeof logFunction === 'object') {
+      return logFunction[this.languageId] || '';
     }
     return '';
   }
@@ -24,7 +20,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'python':
         return 'print';
       case 'go':
-        return 'fmt.println';
+        return 'fmt.Println';
       case 'java':
         return 'System.out.println';
       case 'php':
@@ -75,13 +71,27 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
             return match;
           });
         }
-        return `${printFunction} ${escapedVariableName}`;
+        return `${printFunction} ${escapedVariableName};`;
+      }
+      case 'perl': {
+        const count = (variableName.match(/\$/g) || []).length; // 统计字符串中的 $ 符号个数
+        let escapedVariableName = variableName;
+        if (count >= 2 && count % 2 === 0) {
+          const halfCount = count / 2;
+          let escapedCount = 0;
+          escapedVariableName = variableName.replace(/\$/g, (match) => {
+            if (escapedCount < halfCount) {
+              escapedCount++;
+              return '\\$';
+            }
+            return match;
+          });
+        }
+        return `${printFunction} ${escapedVariableName};\n`;
       }
       case 'ruby':
       case 'shellscript':
         return `${printFunction} ${variableName}`;
-      case 'perl':
-        return `${printFunction} ${variableName}\n`;
       default:
         return `${printFunction}(${variableName})`;
     }
@@ -119,9 +129,10 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
         return ' + ';
       case 'python':
       case 'ruby':
-      case 'perl':
       case 'shellscript':
         return ' ';
+      case 'perl':
+        return ' . " " . ';
       case 'php':
         return ' . ';
       default:
@@ -138,9 +149,9 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'csharp':
       case 'python':
       case 'swift':
-      case 'perl':
       case 'ruby':
         return `${variableName}`;
+      case 'perl':
       case 'php':
         if (variableName.includes('$')) {
           return variableName;

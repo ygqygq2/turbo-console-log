@@ -48,7 +48,7 @@ Properties:
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | -------------- |
 | Custom Prefix                        | The prefix of the log message                                                                                               | logMessagePrefix                | `🚀`           |
 | Custom Suffix                        | The suffix of the log message                                                                                               | logMessageSuffix                | `:`            |
-| Custom Log Function                  | Custom log function to use in the inserted log message                                                                      | logFunction                     | `''`           |
+| Custom Log Function                  | Custom log function to use in the inserted log message                                                                      | logFunction                     | `{}`           |
 | Delimiter Inside Message             | The delimiter that will separate the different log message elements (file name, line number, class, function, and variable) | delimiterInsideMessage          | `~`            |
 | Quote                                | Double quotes ("") or single quotes ('')                                                                                    | quote                           | `"`            |
 | Add Semicolon In The End             | Whether to put a semicolon at the end of the log message or not by language                                                 | addSemicolonInTheEnd            | `true`         |

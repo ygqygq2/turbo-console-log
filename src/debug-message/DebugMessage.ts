@@ -2,14 +2,14 @@ import { Position, TextDocument, TextEditorEdit } from 'vscode';
 import { closingContextLine } from '@/utils';
 import { omit } from 'lodash';
 import { BracketType, ExtensionProperties, Message } from '../typings';
-import { LanguageProcessorUnion } from './LanguageProcessor';
+import { LanguageProcessor } from './types';
 
 // 导出抽象类DebugMessage
 export abstract class DebugMessage {
   // 行代码处理
-  languageProcessor: LanguageProcessorUnion;
+  languageProcessor: LanguageProcessor;
   // 构造函数
-  constructor(languageProcessor: LanguageProcessorUnion) {
+  constructor(languageProcessor: LanguageProcessor) {
     this.languageProcessor = languageProcessor;
   }
 
@@ -67,7 +67,7 @@ export abstract class DebugMessage {
 }
 
 export class GeneralDebugMessage extends DebugMessage {
-  constructor(languageProcessor: LanguageProcessorUnion) {
+  constructor(languageProcessor: LanguageProcessor) {
     super(languageProcessor);
   }
   private baseDebuggingMsg(
@@ -145,7 +145,7 @@ export class GeneralDebugMessage extends DebugMessage {
     if (!logFunctionByLanguageId) {
       return this.languageProcessor.getPrintStatement(content, semicolon);
     }
-    return `${logFunctionByLanguageId}(${content})${semicolon}`;
+    return this.languageProcessor.getPrintStatement(content, logFunctionByLanguageId, semicolon);
   }
 
   /**
