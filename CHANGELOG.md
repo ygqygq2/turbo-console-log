@@ -2,6 +2,10 @@
 
 All notable changes to the "turbo-console-log" extension will be documented in this file.
 
+# [3.0.3]
+## 问题修复 🐛
+* fix: python、go 打印字符错误 [#2](https://github.com/ygqygq2/turbo-console-log/issues/2)
+
 # [3.0.2]
 ## 问题修复 🐛
 * fix: logFunction 未配置代码类型报错 [#1](https://github.com/ygqygq2/turbo-console-log/issues/1)
@@ -12,13 +16,13 @@ All notable changes to the "turbo-console-log" extension will be documented in t
 * feat: 增加快捷键 `ctrl + alt + u` 更新调试日志行号
 
 ## 功能优化 🚀
-* perf: logFunction 多语言支持
+* refactor: logFunction 多语言支持
 ```
   "turboConsoleLog": {
     "includeFileNameAndLineNum": true,
-    "logFunction": [
+    "logFunction": {
       "php": "echoFunction"
-    ]
+    }
   }
 ```
 

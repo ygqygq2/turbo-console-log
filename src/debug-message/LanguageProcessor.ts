@@ -123,11 +123,11 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'typescript':
       case 'go':
       case 'swift':
+      case 'python':
         return ', ';
       case 'java':
       case 'csharp':
         return ' + ';
-      case 'python':
       case 'ruby':
       case 'shellscript':
         return ' ';
