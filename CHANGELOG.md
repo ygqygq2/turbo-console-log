@@ -2,6 +2,10 @@
 
 All notable changes to the "turbo-console-log" extension will be documented in this file.
 
+# [3.0.2]
+## 问题修复 🐛
+* fix: logFunction 未配置代码类型报错
+
 # [3.0.1]
 
 ## 新增功能 🌱

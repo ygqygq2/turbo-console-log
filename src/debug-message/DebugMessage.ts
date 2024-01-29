@@ -141,7 +141,7 @@ export class GeneralDebugMessage extends DebugMessage {
             lineOfLogMsg + (insertEmptyLineBeforeLogMessage ? 2 : 1)
           } ${delimiterInsideMessage} `
         : ''
-    }${selectedVar}${logMessageSuffix}${quote}${this.languageProcessor.getConcatenatedString()} ${this.languageProcessor.variableToString(selectedVar)}`;
+    }${selectedVar}${logMessageSuffix}${quote}${this.languageProcessor.getConcatenatedString()}${this.languageProcessor.variableToString(selectedVar)}`;
     if (!logFunctionByLanguageId) {
       return this.languageProcessor.getPrintStatement(content, semicolon);
     }
