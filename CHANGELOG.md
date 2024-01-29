@@ -4,7 +4,7 @@ All notable changes to the "turbo-console-log" extension will be documented in t
 
 # [3.0.2]
 ## 问题修复 🐛
-* fix: logFunction 未配置代码类型报错
+* fix: logFunction 未配置代码类型报错 [#1](https://github.com/ygqygq2/turbo-console-log/issues/1)
 
 # [3.0.1]
 
