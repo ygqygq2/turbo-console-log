@@ -14,7 +14,7 @@ export async function run() {
   const testsRoot = path.resolve(__dirname, '..');
 
   // 获取所有测试文件
-  const tsFiles = await glob('**/**.test.ts', { cwd: testsRoot });
+  const tsFiles = await glob('**/**.spec.ts', { cwd: testsRoot });
   console.log('获取到以下测试文件:');
   console.log(tsFiles);
 
