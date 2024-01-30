@@ -6,5 +6,5 @@
   "spec": ["src/test/unit/*.spec.ts", "src/test/unit/**/*.spec.ts"],
   "package": "./package.json",
   "timeout": "20000",
-  "ui": "tdd"
+  "ui": "bdd"
 }
