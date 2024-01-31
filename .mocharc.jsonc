@@ -1,10 +1,10 @@
 // 配置专用于 mocha unit 测试，集成测试是使用 vscode-test
 {
   "require": ["ts-node/register", "tsconfig-paths/register"],
-  "diff": true,
-  "extension": ["ts"],
+  // "diff": true,
+  // "extension": ["ts"],
   "spec": ["src/test/unit/*.spec.ts", "src/test/unit/**/*.spec.ts"],
-  "package": "./package.json",
+  // "package": "./package.json",
   "timeout": "20000",
   "ui": "bdd"
 }

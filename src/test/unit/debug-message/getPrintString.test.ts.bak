@@ -1,0 +1,21 @@
+import { GeneralLanguageProcessor } from '@/debug-message/LanguageProcessor';
+import { expect } from 'chai';
+
+export default () => {
+  describe('GeneralLanguageProcessor', () => {
+    const languageProcessor = new GeneralLanguageProcessor('vitest');
+    describe('getLogFunction', () => {
+      it('should return the log function for the given languageId when logFunction is an object', () => {
+        const logFunction = { vitest: 'console.log' };
+        const result = languageProcessor.getLogFunction(logFunction);
+        expect(result).to.equal('console.log');
+      });
+      it('should return an empty string when logFunction is not an object', () => {
+        const logFunction = { vitest: 'console.log' };
+        const result = languageProcessor.getLogFunction(logFunction);
+        expect(result).to.equal('');
+      });
+    });
+    // Add more test cases for other methods...
+  });
+};

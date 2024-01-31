@@ -148,7 +148,8 @@
     "publish": "vsce publish --no-dependencies",
     "test": "tsc -p ./ && vscode-test",
     "test:suite": "node out/test/runTests.js",
-    "test:unit": "cross-env TS_NODE_PROJECT='src/test/tsconfig.json' mocha"
+    "test:unit": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@types/chai": "^4.3.11",
@@ -175,7 +176,9 @@
     "prettier": "^3.2.4",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vitest": "^1.2.2"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
