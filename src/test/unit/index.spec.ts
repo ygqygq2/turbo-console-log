@@ -6,7 +6,7 @@
 // });
 
 import { assert, expect, test } from 'vitest';
-import { squared } from '../../basic';
+import { squared } from '@/basic';
 
 // Edit an assertion and save to see HMR in action
 

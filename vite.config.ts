@@ -12,7 +12,7 @@ export default defineConfig({
         replacement: path.join(process.cwd(), 'node_modules/$1'),
       },
       {
-        find: /^src(.+)/,
+        find: /^@\/(.+)/,
         replacement: path.join(process.cwd(), 'src/$1'),
       },
     ],
