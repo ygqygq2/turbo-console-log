@@ -1,5 +1,9 @@
 > * 为了支持各种语言打印输出，修改原作者的代码。
 
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/ygqygq2.turbo-print-log.svg?color=07c160&label=turbo-print-log&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=ygqygq2.turbo-print-log)
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/ygqygq2.turbo-print-log)
+
+
 # Main Functionality
 
 Turbo Console Log extension makes debugging much easier by automating the operation of writing meaningful log message.
