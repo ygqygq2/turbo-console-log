@@ -1,7 +1,0 @@
-import getPrintStringTests from './getPrintString.test.ts.bak';
-
-export default (): void => {
-  describe('getPrintString test', () => {
-    getPrintStringTests();
-  });
-};
