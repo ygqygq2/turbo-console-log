@@ -1,0 +1,33 @@
+name: Development and Testing
+on:
+  push:
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm i -g @vscode/vsce pnpm
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm i --frozen-lockfile --ignore-scripts
+      - run: xvfb-run -a pnpm test:suite
+        if: runner.os == 'Linux'
+      - run: pnpm test:suite
+        if: runner.os != 'Linux'
+      - run: pnpm run test:coverage
+      - run: vsce package --no-dependencies
