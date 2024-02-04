@@ -111,27 +111,32 @@
       {
         "command": "turboConsoleLog.displayLogMessage",
         "key": "ctrl+alt+l",
-        "mac": "ctrl+alt+l"
+        "mac": "ctrl+alt+l",
+        "when": "editorTextFocus"
       },
       {
         "command": "turboConsoleLog.updateLineNumAllLogMessages",
         "key": "ctrl+alt+u",
-        "mac": "ctrl+alt+u"
+        "mac": "ctrl+alt+u",
+        "when": "editorTextFocus"
       },
       {
         "command": "turboConsoleLog.commentAllLogMessages",
         "key": "alt+shift+c",
-        "mac": "alt+shift+c"
+        "mac": "alt+shift+c",
+        "when": "editorTextFocus"
       },
       {
         "command": "turboConsoleLog.uncommentAllLogMessages",
         "key": "alt+shift+u",
-        "mac": "alt+shift+u"
+        "mac": "alt+shift+u",
+        "when": "editorTextFocus"
       },
       {
         "command": "turboConsoleLog.deleteAllLogMessages",
         "key": "alt+shift+d",
-        "mac": "alt+shift+d"
+        "mac": "alt+shift+d",
+        "when": "editorTextFocus"
       }
     ]
   },
