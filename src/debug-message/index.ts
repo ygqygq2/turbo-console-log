@@ -1,3 +1,3 @@
-import { DebugMessage } from './DebugMessage';
+import { DebugMessage, GeneralDebugMessage } from './DebugMessage';
 import { GeneralLanguageProcessor } from './LanguageProcessor';
-export { DebugMessage, GeneralLanguageProcessor };
+export { DebugMessage, GeneralDebugMessage, GeneralLanguageProcessor };

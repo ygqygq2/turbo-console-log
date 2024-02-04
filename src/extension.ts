@@ -32,6 +32,6 @@ function getExtensionProperties(workspaceConfig: vscode.WorkspaceConfiguration) 
     quote: workspaceConfig.quote ?? '"',
     delimiterInsideMessage: workspaceConfig.delimiterInsideMessage ?? '~',
     includeFileNameAndLineNum: workspaceConfig.includeFileNameAndLineNum ?? true,
-    logFunction: workspaceConfig.logFunction ?? [],
+    logFunction: workspaceConfig.logFunction ?? {},
   };
 }
