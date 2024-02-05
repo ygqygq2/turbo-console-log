@@ -7,22 +7,19 @@ import {
   TextEditorEdit,
   window,
 } from 'vscode';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { displayLogMessageCommand } from '@/commands/displayLogMessage';
-import { GeneralDebugMessage } from '@/debug-message';
 import { ExtensionProperties } from '@/typings';
 
 vi.mock('vscode');
 
-describe.todo('displayLogMessageCommand', () => {
+describe('displayLogMessageCommand', () => {
   let mockEditor: TextEditor | undefined;
   let mockDocument: TextDocument;
+  let mockSelection: Selection;
   let mockSelections: Selection[];
   let mockEditBuilder: TextEditorEdit;
-  let mockRange: Range;
-  let mockDebugMessage: GeneralDebugMessage;
   let mockExtensionProperties: ExtensionProperties;
-  let getTabSizeStub: () => number;
 
   beforeEach(() => {
     mockExtensionProperties = {
@@ -37,34 +34,53 @@ describe.todo('displayLogMessageCommand', () => {
       includeFileNameAndLineNum: true,
       logFunction: {},
     };
-    mockEditor = {
-      document: {
-        getWordRangeAtPosition: vi.fn(),
-        getText: vi.fn(),
-      },
-      selections: [],
-      edit: vi.fn((callback) => {
-        callback(mockEditBuilder);
-      }),
-    };
-
-    mockSelections = [
-      new Selection(new Position(0, 0), new Position(0, 5)),
-      new Selection(new Position(1, 0), new Position(1, 10)),
-    ];
 
     mockDocument = {
-      getWordRangeAtPosition: vi.fn(),
-      getText: vi.fn(),
-    };
+      getWordRangeAtPosition: vi
+        .fn()
+        .mockReturnValue(new Range(new Position(0, 0), new Position(0, 0)))
+        .mockReturnValueOnce(new Range(new Position(0, 0), new Position(0, 4))),
+      getText: vi.fn((range: Range): string => {
+        const { start, end } = range;
+        if (start.isEqual(end)) {
+          return ''; // 未选中字符串，返回空字符串
+        }
+        return 'myVar';
+      }),
+      lineAt: vi.fn((lineNumber) => {
+        return {
+          text: 'myVar', // 模拟行的文本内容
+          firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
+          range: {
+            start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+            end: { line: lineNumber, character: 10 }, // 模拟行的结束位置
+          },
+        };
+      }),
+      lineCount: 10, // 模拟文档的行数
+      fileName: 'test.js',
+    } as unknown as TextDocument;
+
+    mockSelection = new Selection(new Position(0, 0), new Position(0, 4));
+    mockSelections = [mockSelection];
 
     mockEditBuilder = {
       insert: vi.fn(),
-    };
+    } as unknown as TextEditorEdit;
+
+    mockEditor = {
+      document: mockDocument,
+      selections: mockSelections,
+      edit: vi.fn((callback) => {
+        callback(mockEditBuilder);
+        return Promise.resolve(true); // 返回一个解析为 true 的 Promise
+      }),
+      options: { tabSize: 2 },
+    } as unknown as TextEditor;
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('应该直接返回，当没有活动编辑器时', async () => {
@@ -75,58 +91,43 @@ describe.todo('displayLogMessageCommand', () => {
 
   it('应该返回调用，当选中字符串时', async () => {
     window.activeTextEditor = mockEditor;
-    mockEditor!.selections = mockSelections;
-
-    mockEditor!.document.getWordRangeAtPosition.mockReturnValueOnce(
-      new Range(new Position(0, 0), new Position(0, 5)),
-    );
-    mockEditor!.document.getWordRangeAtPosition.mockReturnValueOnce(
-      new Range(new Position(1, 0), new Position(1, 10)),
-    );
-
-    mockEditor!.document.getText.mockReturnValueOnce('selectedVar1');
-    mockEditor!.document.getText.mockReturnValueOnce('selectedVar2');
-
     await displayLogMessageCommand().handler(mockExtensionProperties);
-
-    expect(mockEditor!.edit).toHaveBeenCalledTimes(2);
+    expect(mockEditor!.edit).toHaveBeenCalledTimes(1);
     expect(mockEditor!.edit).toHaveBeenCalledWith(expect.any(Function));
-    expect(mockEditBuilder.insert).toHaveBeenCalledTimes(2);
+
+    expect(mockEditBuilder.insert).toHaveBeenCalledTimes(1);
     expect(mockEditBuilder.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
   });
 
   it('应该插入调试日志，未选中，但光标放在变量名上时', async () => {
-    window.activeTextEditor = mockEditor;
-    mockEditor!.selections = mockSelections;
-
-    mockEditor!.document.getWordRangeAtPosition.mockReturnValueOnce(undefined);
-    mockEditor!.document.getWordRangeAtPosition.mockReturnValueOnce(
-      new Range(new Position(1, 0), new Position(1, 10)),
-    );
-
-    mockEditor!.document.getText.mockReturnValueOnce('');
-    mockEditor!.document.getText.mockReturnValueOnce('selectedVar2');
+    const mockSelection = new Selection(new Position(0, 0), new Position(0, 0));
+    mockSelections = [mockSelection];
+    window.activeTextEditor = {
+      ...mockEditor,
+      ...{
+        ...mockDocument,
+        selections: mockSelections,
+      },
+    } as unknown as TextEditor;
 
     await displayLogMessageCommand().handler(mockExtensionProperties);
-
     expect(mockEditor!.edit).toHaveBeenCalledTimes(1);
     expect(mockEditor!.edit).toHaveBeenCalledWith(expect.any(Function));
     expect(mockEditBuilder.insert).toHaveBeenCalledTimes(1);
     expect(mockEditBuilder.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
   });
 
-  it('应该直接返回，当没有选中字符时或光标没有在字符串旁边时', async () => {
-    window.activeTextEditor = mockEditor;
-    mockEditor!.selections = mockSelections;
-
-    mockEditor!.document.getWordRangeAtPosition.mockReturnValueOnce(undefined);
-    mockEditor!.document.getWordRangeAtPosition.mockReturnValueOnce(undefined);
-
-    mockEditor!.document.getText.mockReturnValueOnce('');
-    mockEditor!.document.getText.mockReturnValueOnce('');
+  it('应该直接返回，当没有选中字符时和光标没有在字符串旁边时', async () => {
+    mockSelections = [];
+    window.activeTextEditor = {
+      ...mockEditor,
+      ...{
+        ...mockDocument,
+        selections: mockSelections,
+      },
+    } as unknown as TextEditor;
 
     await displayLogMessageCommand().handler(mockExtensionProperties);
-
     expect(mockEditor!.edit).not.toHaveBeenCalled();
   });
 });

@@ -30,20 +30,16 @@ export function displayLogMessageCommand(): Command {
         // 获取当前选择范围
         const selection: vscode.Selection = editor.selections[index];
 
-        // 获取当前光标所在单词范围
-        const rangeUnderCursor: vscode.Range | undefined = document.getWordRangeAtPosition(
-          selection.active,
-        );
         // 获取当前选择文本
-        let selectedVar: string | '';
         // if rangeUnderCursor is undefined, `document.getText(undefined)` will return the entire file.
         // 如果rangeUnderCursor为undefined，则返回整个文档
-        if (document.getText(selection)) {
-          selectedVar = document.getText(selection);
-        } else {
-          const wordUnderCursor = (rangeUnderCursor && document.getText(rangeUnderCursor)) || '';
-          selectedVar = wordUnderCursor;
-        }
+        const selectedVar =
+          (selection && document.getText(selection)) ||
+          (() => {
+            // 获取当前光标所在单词范围
+            const rangeUnderCursor = document.getWordRangeAtPosition(selection.active);
+            return (rangeUnderCursor && document.getText(rangeUnderCursor)) || '';
+          })();
         // 获取当前光标所在行
         const lineOfSelectedVar: number = selection.active.line;
         // 如果选择文本不为空
