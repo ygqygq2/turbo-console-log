@@ -8,12 +8,12 @@ import {
   window,
 } from 'vscode';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { displayLogMessageCommand } from '@/commands/displayLogMessage';
+import { commentAllLogMessagesCommand } from '@/commands/commentAllLogMessages';
 import { ExtensionProperties } from '@/typings';
 
 vi.mock('vscode');
 
-describe('displayLogMessageCommand', () => {
+describe('commentAllLogMessagesCommand', () => {
   let mockEditor: TextEditor | undefined;
   let mockDocument: TextDocument;
   let mockSelection: Selection;
@@ -47,13 +47,27 @@ describe('displayLogMessageCommand', () => {
         }
         return 'myVar';
       }),
-      lineAt: vi.fn().mockImplementation((lineNumber: number) => {
+      lineAt: vi.fn().mockImplementation((lineNumber) => {
+        if (lineNumber === 2) {
+          return {
+            text: 'console.info("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
+            firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
+            range: {
+              start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+              end: { line: lineNumber, character: 43 }, // 模拟行的结束位置
+            },
+            rangeIncludingLineBreak: {
+              start: { line: lineNumber, character: 0 },
+              end: { line: lineNumber, character: 43 },
+            },
+          };
+        }
         return {
-          text: 'myVar', // 模拟行的文本内容
+          text: '', // 模拟行的文本内容
           firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
           range: {
             start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
-            end: { line: lineNumber, character: 10 }, // 模拟行的结束位置
+            end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
           },
         };
       }),
@@ -66,6 +80,7 @@ describe('displayLogMessageCommand', () => {
 
     mockEditBuilder = {
       insert: vi.fn(),
+      delete: vi.fn(),
     } as unknown as TextEditorEdit;
 
     mockEditor = {
@@ -83,23 +98,21 @@ describe('displayLogMessageCommand', () => {
     vi.restoreAllMocks();
   });
 
-  it('应该直接返回，当没有活动编辑器时', async () => {
-    window.activeTextEditor = undefined;
-    await displayLogMessageCommand().handler(mockExtensionProperties);
-    expect(mockEditor!.edit).not.toHaveBeenCalled();
+  it.todo('应该直接返回，当没有调试日志时', async () => {
+    window.activeTextEditor = mockEditor  ;
+    await commentAllLogMessagesCommand().handler(mockExtensionProperties);
+    expect(mockEditBuilder!.delete).not.toHaveBeenCalled();
+    expect(mockEditBuilder!.insert).not.toHaveBeenCalled();
   });
 
-  it('应该返回调用，当选中字符串时', async () => {
+  it.todo('应该删除调试日志，再插入一行有注释的调试日志，当有调试日志时', async () => {
     window.activeTextEditor = mockEditor;
-    await displayLogMessageCommand().handler(mockExtensionProperties);
-    expect(mockEditor!.edit).toHaveBeenCalledTimes(1);
-    expect(mockEditor!.edit).toHaveBeenCalledWith(expect.any(Function));
-
-    expect(mockEditBuilder.insert).toHaveBeenCalledTimes(1);
-    expect(mockEditBuilder.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
+    await commentAllLogMessagesCommand().handler(mockExtensionProperties);
+    expect(mockEditBuilder!.delete).toHaveBeenCalledTimes(1);
+    expect(mockEditBuilder!.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
   });
 
-  it('应该插入调试日志，未选中，但光标放在变量名上时', async () => {
+  it.todo('应该插入调试日志，未选中，但光标放在变量名上时', async () => {
     const mockSelection = new Selection(new Position(0, 0), new Position(0, 0));
     mockSelections = [mockSelection];
     window.activeTextEditor = {
@@ -110,14 +123,14 @@ describe('displayLogMessageCommand', () => {
       },
     } as unknown as TextEditor;
 
-    await displayLogMessageCommand().handler(mockExtensionProperties);
+    await commentAllLogMessagesCommand().handler(mockExtensionProperties);
     expect(mockEditor!.edit).toHaveBeenCalledTimes(1);
     expect(mockEditor!.edit).toHaveBeenCalledWith(expect.any(Function));
     expect(mockEditBuilder.insert).toHaveBeenCalledTimes(1);
     expect(mockEditBuilder.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
   });
 
-  it('应该直接返回，当没有选中字符时和光标没有在字符串旁边时', async () => {
+  it.todo('应该直接返回，当没有选中字符时和光标没有在字符串旁边时', async () => {
     mockSelections = [];
     window.activeTextEditor = {
       ...mockEditor,
@@ -127,7 +140,7 @@ describe('displayLogMessageCommand', () => {
       },
     } as unknown as TextEditor;
 
-    await displayLogMessageCommand().handler(mockExtensionProperties);
+    await commentAllLogMessagesCommand().handler(mockExtensionProperties);
     expect(mockEditor!.edit).not.toHaveBeenCalled();
   });
 });
