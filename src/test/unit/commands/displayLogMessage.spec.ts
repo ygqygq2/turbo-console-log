@@ -41,8 +41,7 @@ describe('displayLogMessageCommand', () => {
         .mockReturnValue(new Range(new Position(0, 0), new Position(0, 0)))
         .mockReturnValueOnce(new Range(new Position(0, 0), new Position(0, 4))),
       getText: vi.fn((range: Range): string => {
-        const { start, end } = range;
-        if (start.isEqual(end)) {
+        if (range.isEmpty) {
           return ''; // 未选中字符串，返回空字符串
         }
         return 'myVar';

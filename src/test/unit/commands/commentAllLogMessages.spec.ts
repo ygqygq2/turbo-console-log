@@ -41,8 +41,7 @@ describe('commentAllLogMessagesCommand', () => {
         .mockReturnValue(new Range(new Position(0, 0), new Position(0, 0)))
         .mockReturnValueOnce(new Range(new Position(0, 0), new Position(0, 4))),
       getText: vi.fn((range: Range): string => {
-        const { start, end } = range;
-        if (start.isEqual(end)) {
+        if (range.isEmpty) {
           return ''; // 未选中字符串，返回空字符串
         }
         return 'myVar';
@@ -53,12 +52,12 @@ describe('commentAllLogMessagesCommand', () => {
             text: 'console.info("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
             firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
             range: {
-              start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
-              end: { line: lineNumber, character: 43 }, // 模拟行的结束位置
+              start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
+              end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
             },
             rangeIncludingLineBreak: {
-              start: { line: lineNumber, character: 0 },
-              end: { line: lineNumber, character: 43 },
+              start: { line: lineNumber - 1, character: 0 },
+              end: { line: lineNumber, character: 0 },
             },
           };
         }
@@ -66,8 +65,8 @@ describe('commentAllLogMessagesCommand', () => {
           text: '', // 模拟行的文本内容
           firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
           range: {
-            start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
-            end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
+            start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
+            end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
           },
         };
       }),
@@ -98,49 +97,47 @@ describe('commentAllLogMessagesCommand', () => {
     vi.restoreAllMocks();
   });
 
-  it.todo('应该直接返回，当没有调试日志时', async () => {
-    window.activeTextEditor = mockEditor  ;
+  it('应该直接返回，当没有调试日志时', async () => {
+    const mockLineAt = vi.fn().mockImplementation((lineNumber) => {
+      if (lineNumber === 2) {
+        return {
+          text: 'mock text', // 模拟行的文本内容
+          firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
+          range: {
+            start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
+            end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+          },
+          rangeIncludingLineBreak: {
+            start: { line: lineNumber - 1, character: 0 },
+            end: { line: lineNumber, character: 0 },
+          },
+        };
+      }
+      return {
+        text: '', // 模拟行的文本内容
+        firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
+        range: {
+          start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
+          end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+        },
+      };
+    });
+    window.activeTextEditor = {
+      ...mockEditor,
+      document: {
+        ...mockDocument,
+        lineAt: mockLineAt,
+      },
+    } as unknown as TextEditor;
     await commentAllLogMessagesCommand().handler(mockExtensionProperties);
     expect(mockEditBuilder!.delete).not.toHaveBeenCalled();
     expect(mockEditBuilder!.insert).not.toHaveBeenCalled();
   });
 
-  it.todo('应该删除调试日志，再插入一行有注释的调试日志，当有调试日志时', async () => {
+  it('应该删除调试日志，再插入一行有注释的调试日志，当有调试日志时', async () => {
     window.activeTextEditor = mockEditor;
     await commentAllLogMessagesCommand().handler(mockExtensionProperties);
     expect(mockEditBuilder!.delete).toHaveBeenCalledTimes(1);
     expect(mockEditBuilder!.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
-  });
-
-  it.todo('应该插入调试日志，未选中，但光标放在变量名上时', async () => {
-    const mockSelection = new Selection(new Position(0, 0), new Position(0, 0));
-    mockSelections = [mockSelection];
-    window.activeTextEditor = {
-      ...mockEditor,
-      ...{
-        ...mockDocument,
-        selections: mockSelections,
-      },
-    } as unknown as TextEditor;
-
-    await commentAllLogMessagesCommand().handler(mockExtensionProperties);
-    expect(mockEditor!.edit).toHaveBeenCalledTimes(1);
-    expect(mockEditor!.edit).toHaveBeenCalledWith(expect.any(Function));
-    expect(mockEditBuilder.insert).toHaveBeenCalledTimes(1);
-    expect(mockEditBuilder.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
-  });
-
-  it.todo('应该直接返回，当没有选中字符时和光标没有在字符串旁边时', async () => {
-    mockSelections = [];
-    window.activeTextEditor = {
-      ...mockEditor,
-      ...{
-        ...mockDocument,
-        selections: mockSelections,
-      },
-    } as unknown as TextEditor;
-
-    await commentAllLogMessagesCommand().handler(mockExtensionProperties);
-    expect(mockEditor!.edit).not.toHaveBeenCalled();
   });
 });
