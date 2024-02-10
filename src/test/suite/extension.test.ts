@@ -1,13 +1,13 @@
 import { displayLogMessageCommand } from '@/commands/displayLogMessage';
 import { ExtensionProperties } from '@/typings/extension/types';
 import { test, suite, expect } from 'vitest';
-import * as vscode from 'vscode';
+import { Position, TextEditor, window, workspace } from 'vscode';
 
 suite.todo('Extension Test Suite', () => {
   let mockExtensionProperties: ExtensionProperties;
-  let testEditor: vscode.TextEditor;
+  let testEditor: TextEditor;
   suiteTeardown(() => {
-    vscode.window.showInformationMessage('All tests done!');
+    window.showInformationMessage('All tests done!');
   });
 
   beforeEach(async () => {
@@ -24,10 +24,10 @@ suite.todo('Extension Test Suite', () => {
       logFunction: {},
     };
 
-    testEditor = await vscode.workspace.openTextDocument({
+    testEditor = await workspace.openTextDocument({
       content: '// sample content',
     });
-    testEditor = await vscode.window.showTextDocument(testEditor);
+    testEditor = await window.showTextDocument(testEditor);
   });
 
   afterEach(async () => {
@@ -37,7 +37,7 @@ suite.todo('Extension Test Suite', () => {
   test.todo('Display Log Message', async () => {
     await displayLogMessageCommand().handler(mockExtensionProperties);
 
-    expect(vscode.window.activeTextEditor?.edit).toHaveBeenCalled();
+    expect(window.activeTextEditor?.edit).toHaveBeenCalled();
 
     expect(mockEditor.edit).toHaveBeenCalledWith(expect.any(Function));
     expect(mockEditBuilder.insert).toHaveBeenCalledWith(expect.any(Position), expect.any(String));
