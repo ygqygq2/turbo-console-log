@@ -152,8 +152,9 @@
     "package": "vsce package --no-dependencies",
     "publish": "vsce publish --no-dependencies",
     "test": "tsc -p ./ && vscode-test",
-    "test:suite": "tsc -p ./ && node out/test/runTests.js",
-    "test:unit": "vitest --watch=false",
+    "test:suite:mocha": "tsc -p ./ && node out/test/runTests.js",
+    "test:suite": "vitest suite --watch=false",
+    "test:unit": "vitest unit --watch=false",
     "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
