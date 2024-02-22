@@ -36,7 +36,7 @@ jobs:
       #     files: '*.vsix'
       - run: |
           # 使用sed命令提取最新的版本记录
-          cat CHANGELOG.md | awk '/^## \[/ {if (flag) exit; flag=1} flag {print}' > body.md
+          cat CHANGELOG.md | awk '/^# \[/ {if (flag) exit; flag=1} flag {print}' > body.md
       - name: Publish release
         uses: ncipollo/release-action@v1
         with:

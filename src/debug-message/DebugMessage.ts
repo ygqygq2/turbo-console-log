@@ -143,7 +143,7 @@ export class GeneralDebugMessage extends DebugMessage {
         : ''
     }${selectedVar}${logMessageSuffix}${quote}${this.languageProcessor.getConcatenatedString()}${this.languageProcessor.variableToString(selectedVar)}`;
     if (!logFunctionByLanguageId) {
-      return this.languageProcessor.getPrintStatement(content, semicolon);
+      return this.languageProcessor.getPrintStatement(content, '', semicolon);
     }
     return this.languageProcessor.getPrintStatement(content, logFunctionByLanguageId, semicolon);
   }

@@ -2,6 +2,10 @@
 
 All notable changes to the "turbo-console-log" extension will be documented in this file.
 
+# [3.0.4]
+## 问题修复 🐛
+* fix: 需要分号时打印语句错误
+
 # [3.0.3]
 ## 问题修复 🐛
 * fix: python、go 打印字符错误 [#2](https://github.com/ygqygq2/turbo-console-log/issues/2)
