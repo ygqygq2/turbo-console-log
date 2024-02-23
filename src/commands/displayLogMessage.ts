@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Command, ExtensionProperties } from '../typings';
-import { getTabSize } from '../utils';
+import { getTabSize } from '../utils/getTabSize';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 // 插入调试日志/更新调试日志行号

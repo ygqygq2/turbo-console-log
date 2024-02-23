@@ -1,8 +1,8 @@
 import { Position, TextDocument, TextEditorEdit } from 'vscode';
-import { closingContextLine } from '@/utils';
 import { omit } from 'lodash';
 import { BracketType, ExtensionProperties, Message } from '../typings';
 import { LanguageProcessor } from './types';
+import { closingContextLine } from '@/utils/closingContextLine';
 
 // 导出抽象类DebugMessage
 export abstract class DebugMessage {

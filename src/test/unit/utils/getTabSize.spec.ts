@@ -1,4 +1,4 @@
-import { getTabSize } from '@/utils';
+import { getTabSize } from '@/utils/getTabSize';
 import { expectTypeOf } from 'expect-type';
 import { describe, expect, it } from 'vitest';
 

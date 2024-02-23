@@ -30,32 +30,27 @@ export function deleteAllLogMessagesCommand(): Command {
         logMessagePrefix,
         delimiterInsideMessage,
       );
+      console.log(
+        '🚀 ~ file: deleteAllLogMessages.ts:29 ~ logMessages:',
+        JSON.stringify(logMessages),
+      );
+
       // 遍历所有日志消息，删除日志消息
-      editor.edit((editBuilder) => {
-        logMessages.forEach(({ lines }) => {
-          const firstLine = lines[0];
-          const lastLine = lines[lines.length - 1];
-          const lineBeforeFirstLine = new vscode.Range(
-            new vscode.Position(firstLine.start.line - 1, 0),
-            new vscode.Position(firstLine.end.line - 1, 0),
-          );
-          const lineAfterLastLine = new vscode.Range(
-            new vscode.Position(lastLine.start.line + 1, 0),
-            new vscode.Position(lastLine.end.line + 1, 0),
-          );
-          // 如果当前行是空行，则删除
-          if (document.lineAt(lineBeforeFirstLine.start).text === '') {
-            editBuilder.delete(lineBeforeFirstLine);
-          }
-          if (document.lineAt(lineAfterLastLine.start).text === '') {
-            editBuilder.delete(lineAfterLastLine);
-          }
-          // 删除所有日志消息
-          lines.forEach((line: vscode.Range) => {
-            editBuilder.delete(line);
+      editor
+        .edit((editBuilder) => {
+          logMessages.forEach(({ lines }) => {
+            lines.forEach((line: vscode.Range) => {
+              editBuilder.delete(line);
+            });
           });
+        })
+        .then((success) => {
+          if (success) {
+            vscode.window.showInformationMessage('TurboConsoleLog: Delete debug log successes.');
+          } else {
+            vscode.window.showErrorMessage('TurboConsoleLog: Delete debug log failed.');
+          }
         });
-      });
     },
   };
 }
