@@ -1,8 +1,11 @@
 name: Publish to VSCode Store
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - '*'
+  # release:
+  #   types:
+  #     - published
   workflow_dispatch:
 jobs:
   package-publish:
