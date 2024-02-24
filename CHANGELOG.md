@@ -3,7 +3,7 @@
 All notable changes to the "turbo-console-log" extension will be documented in this file.
 
 # [3.0.5]
-## 问题修复
+## 问题修复 🐛
 * fix: 调试日志匹配准确性问题
 
 # [3.0.4]
