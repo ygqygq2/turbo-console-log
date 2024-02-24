@@ -1,4 +1,4 @@
-import { GeneralDebugMessage } from '@/debug-message/DebugMessage';
+import { GeneralDebugMessage } from '@/debug-message/GeneralDebugMessage';
 import { GeneralLanguageProcessor } from '@/debug-message/LanguageProcessor';
 import { TextEditor } from 'vscode';
 

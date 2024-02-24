@@ -1,4 +1,4 @@
-import { BracketType, LogMessageType, ProgrammingLanguage } from './extension/enums';
+import { BracketType, LogMessageType } from './extension/enums';
 import {
   BlockType,
   Command,
@@ -21,5 +21,4 @@ export {
   LogMessageType,
   Message,
   MultilineContextVariable,
-  ProgrammingLanguage,
 };

@@ -1,6 +1,6 @@
 import { Position, Range, TextDocument, TextEditorEdit } from 'vscode';
 import { describe, expect, beforeEach, afterEach, it, vi } from 'vitest';
-import { GeneralDebugMessage } from '@/debug-message/DebugMessage';
+import { GeneralDebugMessage } from '@/debug-message/GeneralDebugMessage';
 import { LanguageProcessor } from '@/debug-message/types';
 import { ExtensionProperties } from '@/typings';
 

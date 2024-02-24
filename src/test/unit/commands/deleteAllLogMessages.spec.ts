@@ -49,24 +49,43 @@ describe('deleteAllLogMessagesCommand', () => {
       lineAt: vi.fn().mockImplementation((lineNumber) => {
         if (lineNumber === 2) {
           return {
-            text: 'console.info("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
+            text: 'console.log("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
             firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
             range: {
-              start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
-              end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+              start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+              end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
             },
             rangeIncludingLineBreak: {
-              start: { line: lineNumber - 1, character: 0 },
-              end: { line: lineNumber, character: 0 },
+              start: { line: lineNumber, character: 0 },
+              end: { line: lineNumber + 1, character: 0 },
+            },
+          };
+        }
+        if (lineNumber === 0 || lineNumber === 4) {
+          return {
+            text: 'not empty', // 模拟行的文本内容
+            firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
+            range: {
+              start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+              end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
+            },
+            rangeIncludingLineBreak: {
+              start: { line: lineNumber, character: 0 },
+              end: { line: lineNumber + 1, character: 0 },
             },
           };
         }
         return {
           text: '', // 模拟行的文本内容
+          isEmptyOrWhitespace: true,
           firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
           range: {
-            start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
-            end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+            start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+            end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
+          },
+          rangeIncludingLineBreak: {
+            start: { line: lineNumber, character: 0 },
+            end: { line: lineNumber + 1, character: 0 },
           },
         };
       }),
@@ -104,12 +123,12 @@ describe('deleteAllLogMessagesCommand', () => {
           text: 'mock text', // 模拟行的文本内容
           firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
           range: {
-            start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
-            end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+            start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+            end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
           },
           rangeIncludingLineBreak: {
-            start: { line: lineNumber - 1, character: 0 },
-            end: { line: lineNumber, character: 0 },
+            start: { line: lineNumber, character: 0 },
+            end: { line: lineNumber + 1, character: 0 },
           },
         };
       }
@@ -117,8 +136,8 @@ describe('deleteAllLogMessagesCommand', () => {
         text: '', // 模拟行的文本内容
         firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
         range: {
-          start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
-          end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+          start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+          end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
         },
       };
     });
@@ -144,15 +163,15 @@ describe('deleteAllLogMessagesCommand', () => {
     const mockLineAt = vi.fn().mockImplementation((lineNumber) => {
       if (lineNumber === 2) {
         return {
-          text: 'console.info("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
+          text: 'console.log("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
           firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
           range: {
-            start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
-            end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+            start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+            end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
           },
           rangeIncludingLineBreak: {
-            start: { line: lineNumber - 1, character: 0 },
-            end: { line: lineNumber, character: 0 },
+            start: { line: lineNumber, character: 0 },
+            end: { line: lineNumber + 1, character: 0 },
           },
         };
       }
@@ -160,8 +179,8 @@ describe('deleteAllLogMessagesCommand', () => {
         text: 'not empty', // 模拟行的文本内容
         firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
         range: {
-          start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
-          end: { line: lineNumber, character: 0 }, // 模拟行的结束位置
+          start: { line: lineNumber, character: 0 }, // 模拟行的起始位置
+          end: { line: lineNumber + 1, character: 0 }, // 模拟行的结束位置
         },
       };
     });

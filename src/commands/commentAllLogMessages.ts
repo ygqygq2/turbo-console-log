@@ -17,8 +17,9 @@ export function commentAllLogMessagesCommand(): Command {
       const { debugMessage } = instanceDebugMessage(editor);
 
       // 获取要使用的logFunction
-      const logFunctionByLanguageId =
-        debugMessage.languageProcessor.getLogFunction(logFunction);
+      const logFunctionByLanguageId = debugMessage
+        ?.getLanguageProcessor()
+        .getLogFunction(logFunction);
       function logFunctionToUse(): string {
         if (args && args.length > 0 && typeof args[0] === 'object' && args[0] !== null) {
           const firstArg = args[0] as Record<string, unknown>;
@@ -28,7 +29,6 @@ export function commentAllLogMessagesCommand(): Command {
         }
         return logFunctionByLanguageId;
       }
-
 
       const document: vscode.TextDocument = editor.document;
       // 检测所有log消息

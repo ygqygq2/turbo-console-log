@@ -5,14 +5,14 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
   constructor(private readonly languageId: string) {}
 
   // 根据 languageId 获取对应的 logFunction
-  getLogFunction(logFunction: ExtensionProperties['logFunction']): string {
-    if (typeof logFunction === 'object') {
-      return logFunction[this.languageId] || '';
+  public getLogFunction(logFunction: ExtensionProperties['logFunction']): string {
+    if (Object.keys(logFunction).length !== 0) {
+      return logFunction[this.languageId] || this.getPrintString();
     }
-    return '';
+    return this.getPrintString();
   }
 
-  getPrintString(): string {
+  public getPrintString(): string {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
@@ -40,7 +40,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
-  getPrintStatement(
+  public getPrintStatement(
     variableName: string,
     logFunctionByLanguageId?: string,
     semicolon: string = '',
@@ -97,7 +97,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
-  getSingleLineCommentSymbol(): string {
+  public getSingleLineCommentSymbol(): string {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
@@ -117,7 +117,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
-  getConcatenatedString(): string {
+  public getConcatenatedString(): string {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
@@ -140,7 +140,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
-  variableToString(variableName: string): string {
+  public variableToString(variableName: string): string {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':

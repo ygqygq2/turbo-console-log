@@ -49,7 +49,7 @@ describe('uncommentAllLogMessagesCommand', () => {
       lineAt: vi.fn().mockImplementation((lineNumber) => {
         if (lineNumber === 2) {
           return {
-            text: 'console.info("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
+            text: 'console.log("🚀 ~ file: test.js:2 ~ a:", a)', // 模拟行的文本内容
             firstNonWhitespaceCharacterIndex: 0, // 模拟行的第一个非空格字符的索引
             range: {
               start: { line: lineNumber - 1, character: 0 }, // 模拟行的起始位置
