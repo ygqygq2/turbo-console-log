@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm i -g @vscode/vsce pnpm
+      - run: npm i -g @vscode/vsce pnpm ovsx
       - name: Cache dependencies
         uses: actions/cache@v4
         id: cache
@@ -30,10 +30,13 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm i --frozen-lockfile --ignore-scripts
-      - run: vsce package --no-dependencies
-      - run: vsce publish --no-dependencies -p $TOKEN
+      - name: Publish
         env:
-          TOKEN: ${{ secrets.VSCODE_PUBLISH_TOKEN }}
+          VSCODE_PUBLISH_TOKEN: ${{ secrets.VSCODE_PUBLISH_TOKEN }}
+          OPENVSX_PUBLISH_TOKEN: ${{ secrets.OPENVSX_PUBLISH_TOKEN }}
+        run: |
+          vsce publish --no-dependencies -p $VSCODE_PUBLISH_TOKEN
+          ovsx publish --no-dependencies -p $OPENVSX_PUBLISH_TOKEN
       # - name: Upload assets
       #   uses: softprops/action-gh-release@v1
       #   if: startsWith(github.ref, 'refs/tags/')
