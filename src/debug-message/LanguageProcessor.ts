@@ -34,7 +34,15 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'shellscript':
         return 'echo';
       case 'perl':
+      case 'lua':
         return 'print';
+      case 'c++':
+        return 'std::cout';
+      case 'rust':
+        return 'println!';
+      case 'kotlin':
+      case 'scala':
+        return 'println';
       default:
         return 'console.log';
     }
@@ -56,6 +64,9 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
         return `${printFunction}(${variableName});`;
       case 'python':
       case 'go':
+      case 'kotlin':
+      case 'scala':
+      case 'lua':
         return `${printFunction}(${variableName})`;
       case 'php': {
         const count = (variableName.match(/\$/g) || []).length; // 统计字符串中的 $ 符号个数
@@ -92,6 +103,10 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'ruby':
       case 'shellscript':
         return `${printFunction} ${variableName}`;
+      case 'c++':
+        return `${printFunction} << ${variableName} << std::endl;`;
+      case 'rust':
+        return `${printFunction}!("{}", ${variableName});`;
       default:
         return `${printFunction}(${variableName})`;
     }
@@ -103,6 +118,10 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'typescript':
       case 'php':
       case 'csharp':
+      case 'c++':
+      case 'rust':
+      case 'kotlin':
+      case 'scala':
         return '//';
       case 'python':
       case 'ruby':
@@ -112,6 +131,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'swift':
       case 'shellscript':
         return '#';
+      case 'lua':
+        return '--';
       default:
         return '//';
     }
@@ -124,6 +145,10 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'go':
       case 'swift':
       case 'python':
+      case 'rust':
+      case 'kotlin':
+      case 'scala':
+      case 'lua':
         return ', ';
       case 'java':
       case 'csharp':
@@ -135,6 +160,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
         return ' . " " . ';
       case 'php':
         return ' . ';
+      case 'c++':
+        return ' << ';
       default:
         return ', ';
     }
@@ -150,6 +177,11 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'python':
       case 'swift':
       case 'ruby':
+      case 'c++':
+      case 'rust':
+      case 'kotlin':
+      case 'scala':
+      case 'lua':
         return `${variableName}`;
       case 'perl':
       case 'php':

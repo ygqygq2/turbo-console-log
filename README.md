@@ -1,4 +1,5 @@
 > * 为了支持各种语言打印输出，修改原作者的代码。
+> * 逻辑更纯粹，维护更简单。直接变量的下一行生成打印日志，再移动到需要的地方，再更新日志行号即可。
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/ygqygq2.turbo-print-log.svg?color=07c160&label=turbo-print-log&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=ygqygq2.turbo-print-log)
 ![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/ygqygq2.turbo-print-log)
