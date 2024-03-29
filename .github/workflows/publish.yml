@@ -35,6 +35,7 @@ jobs:
           VSCODE_PUBLISH_TOKEN: ${{ secrets.VSCODE_PUBLISH_TOKEN }}
           OPENVSX_PUBLISH_TOKEN: ${{ secrets.OPENVSX_PUBLISH_TOKEN }}
         run: |
+          vsce package --no-dependencies
           vsce publish --no-dependencies -p $VSCODE_PUBLISH_TOKEN
           ovsx publish --no-dependencies -p $OPENVSX_PUBLISH_TOKEN
       # - name: Upload assets
