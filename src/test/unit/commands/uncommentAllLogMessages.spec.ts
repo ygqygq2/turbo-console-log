@@ -1,3 +1,6 @@
+import { uncommentAllLogMessagesCommand } from '@/commands/uncommentAllLogMessages';
+import { ExtensionProperties } from '@/typings';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   Position,
   Range,
@@ -7,11 +10,17 @@ import {
   TextEditorEdit,
   window,
 } from 'vscode';
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { uncommentAllLogMessagesCommand } from '@/commands/uncommentAllLogMessages';
-import { ExtensionProperties } from '@/typings';
 
 vi.mock('vscode');
+vi.mock('@/extension', () => ({
+  logger: {
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+}));
 
 describe('uncommentAllLogMessagesCommand', () => {
   let mockEditor: TextEditor | undefined;

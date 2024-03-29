@@ -1,6 +1,13 @@
+import { Logger } from '@ygqygq2/vscode-log';
 import * as vscode from 'vscode';
-import { Command, ExtensionProperties } from './typings';
 import { getAllCommands } from './commands/';
+import { CHANNEL_TITLE } from './constants';
+import { CustomError, errorCodeMessages } from './error';
+import { Command, ExtensionProperties } from './typings';
+
+CustomError.configure(errorCodeMessages);
+Logger.configure(vscode.window, CHANNEL_TITLE);
+export const logger = Logger.getInstance();
 
 // 导出一个函数，用于激活插件
 export function activate(): void {

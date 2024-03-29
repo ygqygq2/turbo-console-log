@@ -1,7 +1,8 @@
+import { logger } from '@/extension';
+import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 import * as vscode from 'vscode';
 import { Command, ExtensionProperties } from '../typings';
 import { getTabSize } from '../utils/getTabSize';
-import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 // 插入调试日志/更新调试日志行号
 export function displayLogMessageCommand(): Command {
@@ -45,6 +46,7 @@ export function displayLogMessageCommand(): Command {
         // 如果选择文本不为空
         if (selectedVar.trim().length !== 0) {
           // 使用编辑器编辑
+          logger.info('Insert debug log');
           await editor.edit((editBuilder) => {
             // 调用debugMessage.insertMessage函数
             debugMessage.insertMessage(

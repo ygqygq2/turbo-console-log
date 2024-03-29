@@ -1,6 +1,7 @@
+import { logger } from '@/extension';
+import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 import * as vscode from 'vscode';
 import { Command, ExtensionProperties, Message } from '../typings';
-import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 export function updateLineNumAllLogMessagesCommand(): Command {
   return {
@@ -27,7 +28,9 @@ export function updateLineNumAllLogMessagesCommand(): Command {
       }
 
       // 检测所有日志消息
-      const logFunctionByLanguageId = debugMessage?.getLanguageProcessor().getLogFunction(logFunction);
+      const logFunctionByLanguageId = debugMessage
+        ?.getLanguageProcessor()
+        .getLogFunction(logFunction);
       const logMessages: Message[] = debugMessage.detectAll(
         document,
         logFunctionByLanguageId,
@@ -37,6 +40,7 @@ export function updateLineNumAllLogMessagesCommand(): Command {
 
       // 遍历所有日志消息，并更新行号
       const oldLineNum = new RegExp(`:(\\d+) ${delimiterInsideMessage}`);
+      logger.info('Update debug log line number');
       editor.edit((editBuilder) => {
         logMessages.forEach(({ spaces, lines }) => {
           lines.forEach((line: vscode.Range) => {

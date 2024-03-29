@@ -2,7 +2,7 @@
   "name": "turbo-print-log",
   "displayName": "Turbo Console Log for more language",
   "description": "选中变量，根据不同语言增加一行变量打印日志",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "publisher": "ygqygq2",
   "engines": {
     "vscode": "^1.85.0"
@@ -204,5 +204,8 @@
     "publisherDisplayName": "ygqygq2",
     "publisherId": "e0b1421e-635c-639a-85a0-8b271dcb3d11",
     "isPreReleaseVersion": false
+  },
+  "dependencies": {
+    "@ygqygq2/vscode-log": "^0.0.3"
   }
 }

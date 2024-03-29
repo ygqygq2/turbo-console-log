@@ -1,6 +1,7 @@
+import { logger } from '@/extension';
+import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 import * as vscode from 'vscode';
 import { Command, ExtensionProperties, Message } from '../typings';
-import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 export function uncommentAllLogMessagesCommand(): Command {
   return {
@@ -21,7 +22,9 @@ export function uncommentAllLogMessagesCommand(): Command {
       const document: vscode.TextDocument = editor.document;
 
       // 检测所有日志消息
-      const logFunctionByLanguageId = debugMessage?.getLanguageProcessor().getLogFunction(logFunction);
+      const logFunctionByLanguageId = debugMessage
+        ?.getLanguageProcessor()
+        .getLogFunction(logFunction);
       const logMessages: Message[] = debugMessage.detectAll(
         document,
         logFunctionByLanguageId,
@@ -32,6 +35,7 @@ export function uncommentAllLogMessagesCommand(): Command {
       // 遍历所有日志消息，并删除注释
       const singleLineCommentSymbol = debugMessage.getSingleLineCommentSymbol();
       const regex = new RegExp(`${singleLineCommentSymbol}`, 'g');
+      logger.info('Uncomment debug log');
       editor.edit((editBuilder) => {
         logMessages.forEach(({ spaces, lines }) => {
           lines.forEach((line: vscode.Range) => {

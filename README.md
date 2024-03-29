@@ -62,6 +62,25 @@ Properties:
 | Insert Empty Line Before Log Message | Whether to insert an empty line before the log message or not                                                               | insertEmptyLineBeforeLogMessage | `false`        |
 | Insert Empty Line After Log Message  | Whether to insert an empty line after the log message or not                                                                | insertEmptyLineAfterLogMessage  | `false`        |
 
+## Support languages
+
+- javascript
+- typescript
+- php
+- csharp
+- c++
+- rust
+- kotlin
+- scala
+- python
+- ruby
+- perl
+- go
+- java
+- swift
+- shellscript
+- lua
+
 ## License
 
 MIT Copyright &copy; Turbo Console Log

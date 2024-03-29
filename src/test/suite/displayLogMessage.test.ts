@@ -12,6 +12,15 @@ import { displayLogMessageCommand } from '@/commands/displayLogMessage';
 import { ExtensionProperties } from '@/typings';
 
 vi.mock('vscode');
+vi.mock('@/extension', () => ({
+  logger: {
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+}));
 
 describe('displayLogMessageCommand', () => {
   let mockEditor: TextEditor | undefined;

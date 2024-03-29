@@ -1,6 +1,7 @@
+import { logger } from '@/extension';
+import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 import * as vscode from 'vscode';
 import { Command, ExtensionProperties, Message } from '../typings';
-import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 // 导出一个函数，用于删除所有日志消息
 export function deleteAllLogMessagesCommand(): Command {
@@ -62,9 +63,9 @@ export function deleteAllLogMessagesCommand(): Command {
         })
         .then((success) => {
           if (success) {
-            vscode.window.showInformationMessage('TurboConsoleLog: Delete debug log successes.');
+            logger.info('Delete debug log success.');
           } else {
-            vscode.window.showErrorMessage('TurboConsoleLog: Delete debug log failed.');
+            logger.info('Delete debug log failed.');
           }
         });
     },

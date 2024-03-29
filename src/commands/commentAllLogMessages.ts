@@ -1,6 +1,7 @@
+import { logger } from '@/extension';
+import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 import * as vscode from 'vscode';
 import { Command, ExtensionProperties, Message } from '../typings';
-import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 export function commentAllLogMessagesCommand(): Command {
   return {
@@ -41,6 +42,7 @@ export function commentAllLogMessagesCommand(): Command {
 
       // 在编辑器中添加注释
       const singleLineCommentSymbol = debugMessage.getSingleLineCommentSymbol();
+      logger.info('Comment debug log');
       editor.edit((editBuilder) => {
         logMessages.forEach(({ spaces, lines }) => {
           lines.forEach((line: vscode.Range) => {

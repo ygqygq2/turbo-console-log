@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  '@ygqygq2/vscode-log':
+    specifier: ^0.0.3
+    version: 0.0.3
+
 devDependencies:
   '@types/chai':
     specifier: ^4.3.11
@@ -1157,6 +1162,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@ygqygq2/vscode-log@0.0.3:
+    resolution: {integrity: sha512-QcmmOJ2+T1QBTTKdtlCGQQ/qNUaMRKHKEtckf0B2V/aafZKnoRZfnMWQRNpaZwDVSakSqkb48vJJlusw9/T9vw==}
+    dev: false
 
   /acorn-jsx@5.3.2(acorn@8.11.3):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
