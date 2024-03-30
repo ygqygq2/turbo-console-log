@@ -1,26 +1,11 @@
 import { commentAllLogMessagesCommand } from '@/commands/commentAllLogMessages';
 import { ExtensionProperties } from '@/typings';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  Position,
-  Range,
-  Selection,
-  TextDocument,
-  TextEditor,
-  TextEditorEdit,
-  window,
-} from 'vscode';
+import { Position, Range, Selection, TextDocument, TextEditor, TextEditorEdit, window } from 'vscode';
 
 vi.mock('vscode');
-vi.mock('@/extension', () => ({
-  logger: {
-    trace: vi.fn(),
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
-  },
-}));
+const { mockLogger } = await vi.hoisted(() => import('@/test/globalMocks'));
+vi.mock('@/extension', mockLogger);
 
 describe('commentAllLogMessagesCommand', () => {
   let mockEditor: TextEditor | undefined;

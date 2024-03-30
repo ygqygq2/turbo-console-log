@@ -12,15 +12,8 @@ import {
 } from 'vscode';
 
 vi.mock('vscode');
-vi.mock('@/extension', () => ({
-  logger: {
-    trace: vi.fn(),
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
-  },
-}));
+const { mockLogger } = await vi.hoisted(() => import('@/test/globalMocks'));
+vi.mock('@/extension', mockLogger);
 
 describe('displayLogMessageCommand', () => {
   let mockEditor: TextEditor | undefined;

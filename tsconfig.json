@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2020",
+    "module": "ESNext",
+    "target": "ESNext",
     "outDir": "out",
-    "lib": ["es2020"],
+    "lib": ["ESNext"],
     "sourceMap": true,
     "rootDir": "src",
     "baseUrl": "./",
     "strict": true,
     "esModuleInterop": true,
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
