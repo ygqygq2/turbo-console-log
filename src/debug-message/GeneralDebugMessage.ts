@@ -1,9 +1,11 @@
-import { Position, TextDocument, TextEditorEdit } from 'vscode';
 import { omit } from 'lodash';
+import { Position, TextDocument, TextEditorEdit } from 'vscode';
+
 import { closingContextLine } from '@/utils/closingContextLine';
+
 import { BracketType, ExtensionProperties, Message } from '../typings';
-import { LanguageProcessor } from './types';
 import { DebugMessage } from './DebugMessage';
+import { LanguageProcessor } from './types';
 
 export class GeneralDebugMessage extends DebugMessage {
   // 构造函数
@@ -17,22 +19,16 @@ export class GeneralDebugMessage extends DebugMessage {
   }
 
   // 返回消息前导空格
-  public spacesBeforeLogMsg(
-    document: TextDocument,
-    selectedVarLine: number,
-    logMsgLine: number,
-  ): string {
+  public spacesBeforeLogMsg(document: TextDocument, selectedVarLine: number, logMsgLine: number): string {
     const selectedVarTextLine = document.lineAt(selectedVarLine);
-    const selectedVarTextLineFirstNonWhitespaceCharacterIndex =
-      selectedVarTextLine.firstNonWhitespaceCharacterIndex;
+    const selectedVarTextLineFirstNonWhitespaceCharacterIndex = selectedVarTextLine.firstNonWhitespaceCharacterIndex;
     const spacesBeforeSelectedVarLine = selectedVarTextLine.text
       .split('')
       .splice(0, selectedVarTextLineFirstNonWhitespaceCharacterIndex)
       .reduce((previousValue, currentValue) => previousValue + currentValue, '');
     if (logMsgLine < document.lineCount) {
       const logMsgTextLine = document.lineAt(logMsgLine);
-      const logMsgTextLineFirstNonWhitespaceCharacterIndex =
-        logMsgTextLine.firstNonWhitespaceCharacterIndex;
+      const logMsgTextLineFirstNonWhitespaceCharacterIndex = logMsgTextLine.firstNonWhitespaceCharacterIndex;
       const spacesBeforeLogMsgLine = logMsgTextLine.text
         .split('')
         .splice(0, logMsgTextLineFirstNonWhitespaceCharacterIndex)
@@ -82,10 +78,7 @@ export class GeneralDebugMessage extends DebugMessage {
     selectedVar: string,
     lineOfSelectedVar: number,
     lineOfLogMsg: number,
-    extensionProperties: Omit<
-      ExtensionProperties,
-      'wrapLogMessage' | 'insertEmptyLineAfterLogMessage'
-    >,
+    extensionProperties: Omit<ExtensionProperties, 'wrapLogMessage' | 'insertEmptyLineAfterLogMessage'>,
   ): string {
     // 获取文件名
     const fileName = document.fileName.includes('/')
@@ -111,19 +104,13 @@ export class GeneralDebugMessage extends DebugMessage {
         : ''
     }${
       includeFileNameAndLineNum
-        ? `file: ${fileName}:${
-            lineOfLogMsg + (insertEmptyLineBeforeLogMessage ? 2 : 1)
-          } ${delimiterInsideMessage} `
+        ? `file: ${fileName}:${lineOfLogMsg + (insertEmptyLineBeforeLogMessage ? 2 : 1)} ${delimiterInsideMessage} `
         : ''
     }${selectedVar}${logMessageSuffix}${quote}${this.getLanguageProcessor()?.getConcatenatedString()}${this.getLanguageProcessor()?.variableToString(selectedVar)}`;
     if (!logFunctionByLanguageId) {
       return this.getLanguageProcessor()?.getPrintStatement(content, '', semicolon);
     }
-    return this.getLanguageProcessor()?.getPrintStatement(
-      content,
-      logFunctionByLanguageId,
-      semicolon,
-    );
+    return this.getLanguageProcessor()?.getPrintStatement(content, logFunctionByLanguageId, semicolon);
   }
 
   /**
@@ -146,11 +133,7 @@ export class GeneralDebugMessage extends DebugMessage {
     extensionProperties: ExtensionProperties,
   ): void {
     const lineOfLogMsg: number = this.line(lineOfSelectedVar);
-    const spacesBeforeMsg: string = this.spacesBeforeLogMsg(
-      document,
-      lineOfSelectedVar,
-      lineOfLogMsg,
-    );
+    const spacesBeforeMsg: string = this.spacesBeforeLogMsg(document, lineOfSelectedVar, lineOfLogMsg);
     // 构造调试信息内容
     const debuggingMsgContent: string = this.constructDebuggingMsgContent(
       document,
@@ -160,11 +143,7 @@ export class GeneralDebugMessage extends DebugMessage {
       omit(extensionProperties, ['wrapLogMessage', 'insertEmptyLineAfterLogMessage']),
     );
     // 构造调试信息
-    const debuggingMsg: string = this.constructDebuggingMsg(
-      extensionProperties,
-      debuggingMsgContent,
-      spacesBeforeMsg,
-    );
+    const debuggingMsg: string = this.constructDebuggingMsg(extensionProperties, debuggingMsgContent, spacesBeforeMsg);
     // 获取选中变量的行
     // const selectedVarLine = document.lineAt(lineOfSelectedVar);
     // 添加基础调试信息

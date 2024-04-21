@@ -15,7 +15,4 @@ export const customErrorCodeMessages: ErrorCodeMessage = {
   ...execCustomErrorCodeMessage,
 };
 
-export const { errorCodeEnum, errorCodeMessages } = createErrorCodeMessages(
-  CustomErrorCode,
-  customErrorCodeMessages,
-);
+export const { errorCodeEnum, errorCodeMessages } = createErrorCodeMessages(CustomErrorCode, customErrorCodeMessages);

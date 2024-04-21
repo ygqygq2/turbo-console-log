@@ -1,5 +1,6 @@
 import { Logger } from '@ygqygq2/vscode-log';
 import * as vscode from 'vscode';
+
 import { getAllCommands } from './commands/';
 import { CHANNEL_TITLE } from './constants';
 import { CustomError, errorCodeMessages } from './error';
@@ -12,8 +13,7 @@ export const logger = Logger.getInstance();
 // 导出一个函数，用于激活插件
 export function activate(): void {
   // 获取配置信息
-  const config: vscode.WorkspaceConfiguration =
-    vscode.workspace.getConfiguration('turboConsoleLog');
+  const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('turboConsoleLog');
   // 获取扩展属性
   const properties: ExtensionProperties = getExtensionProperties(config);
   // 获取所有命令

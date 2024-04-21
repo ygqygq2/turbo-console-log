@@ -1,5 +1,6 @@
-import { Message } from '@/typings';
 import { TextEditor } from 'vscode';
+
+import { Message } from '@/typings';
 
 export const checkRangeOverlapping = (logMessages: Message[], editor: TextEditor) => {
   const rangeToCheck = editor.selections[0];

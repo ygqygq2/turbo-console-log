@@ -1,6 +1,8 @@
+import * as vscode from 'vscode';
+
 import { logger } from '@/extension';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
-import * as vscode from 'vscode';
+
 import { Command, ExtensionProperties, Message } from '../typings';
 
 // 导出一个函数，用于删除所有日志消息
@@ -24,9 +26,7 @@ export function deleteAllLogMessagesCommand(): Command {
       // 获取当前文档
       const document: vscode.TextDocument = editor.document;
       // 检测所有日志消息
-      const logFunctionByLanguageId = debugMessage
-        ?.getLanguageProcessor()
-        .getLogFunction(logFunction);
+      const logFunctionByLanguageId = debugMessage?.getLanguageProcessor().getLogFunction(logFunction);
       const logMessages: Message[] = debugMessage.detectAll(
         document,
         logFunctionByLanguageId,
@@ -50,10 +50,7 @@ export function deleteAllLogMessagesCommand(): Command {
               }
               // 删除当前行后面的空行
               lineNumber = line.end.line;
-              while (
-                lineNumber < document.lineCount &&
-                document.lineAt(lineNumber).isEmptyOrWhitespace
-              ) {
+              while (lineNumber < document.lineCount && document.lineAt(lineNumber).isEmptyOrWhitespace) {
                 const lineToDelete = document.lineAt(lineNumber).rangeIncludingLineBreak;
                 editBuilder.delete(lineToDelete);
                 lineNumber++;

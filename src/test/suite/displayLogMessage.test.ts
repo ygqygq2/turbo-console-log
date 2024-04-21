@@ -1,13 +1,6 @@
-import {
-  Position,
-  Range,
-  Selection,
-  TextDocument,
-  TextEditor,
-  TextEditorEdit,
-  window,
-} from 'vscode';
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { Position, Range, Selection, TextDocument, TextEditor, TextEditorEdit, window } from 'vscode';
+
 import { displayLogMessageCommand } from '@/commands/displayLogMessage';
 import { ExtensionProperties } from '@/typings';
 

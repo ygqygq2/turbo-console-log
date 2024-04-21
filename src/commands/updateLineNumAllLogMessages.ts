@@ -1,14 +1,15 @@
+import * as vscode from 'vscode';
+
 import { logger } from '@/extension';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
-import * as vscode from 'vscode';
+
 import { Command, ExtensionProperties, Message } from '../typings';
 
 export function updateLineNumAllLogMessagesCommand(): Command {
   return {
     name: 'turboConsoleLog.updateLineNumAllLogMessages',
     handler: async (extensionProperties: ExtensionProperties) => {
-      const { logFunction, logMessagePrefix, delimiterInsideMessage, includeFileNameAndLineNum } =
-        extensionProperties;
+      const { logFunction, logMessagePrefix, delimiterInsideMessage, includeFileNameAndLineNum } = extensionProperties;
 
       // 获取当前激活的编辑器
       const editor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
@@ -28,9 +29,7 @@ export function updateLineNumAllLogMessagesCommand(): Command {
       }
 
       // 检测所有日志消息
-      const logFunctionByLanguageId = debugMessage
-        ?.getLanguageProcessor()
-        .getLogFunction(logFunction);
+      const logFunctionByLanguageId = debugMessage?.getLanguageProcessor().getLogFunction(logFunction);
       const logMessages: Message[] = debugMessage.detectAll(
         document,
         logFunctionByLanguageId,

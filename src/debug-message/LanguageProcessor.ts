@@ -1,4 +1,5 @@
 import { ExtensionProperties } from '@/typings/extension/types';
+
 import { LanguageProcessor } from './types';
 
 export class GeneralLanguageProcessor implements LanguageProcessor {
@@ -48,11 +49,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
-  public getPrintStatement(
-    variableName: string,
-    logFunctionByLanguageId?: string,
-    semicolon: string = '',
-  ): string {
+  public getPrintStatement(variableName: string, logFunctionByLanguageId?: string, semicolon: string = ''): string {
     const printFunction = logFunctionByLanguageId || this.getPrintString();
     switch (this.languageId) {
       case 'javascript':

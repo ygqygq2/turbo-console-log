@@ -1,5 +1,6 @@
-import { LogMessageType } from './enums';
 import { Range } from 'vscode';
+
+import { LogMessageType } from './enums';
 
 export type Command = {
   name: string;

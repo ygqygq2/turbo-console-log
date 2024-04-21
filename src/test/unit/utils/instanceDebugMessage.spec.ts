@@ -1,5 +1,6 @@
-import { TextEditor } from 'vscode';
 import { describe, expect, it, vi } from 'vitest';
+import { TextEditor } from 'vscode';
+
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 vi.mock('vscode');

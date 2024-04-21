@@ -1,4 +1,5 @@
 import { TextDocument } from 'vscode';
+
 import { BracketType } from '../typings';
 import { locBrackets } from './locBrackets';
 
@@ -18,10 +19,7 @@ export function closingContextLine(
   // 当声明行小于文档行数时，循环
   while (declarationLine < document.lineCount) {
     // 获取声明行中的打开括号和关闭括号的数量
-    const { openingBrackets, closingBrackets } = locBrackets(
-      document.lineAt(declarationLine).text,
-      bracketType,
-    );
+    const { openingBrackets, closingBrackets } = locBrackets(document.lineAt(declarationLine).text, bracketType);
     // 打开括号计数加一
     nbrOfOpenedBraces += openingBrackets;
     // 关闭括号计数加一

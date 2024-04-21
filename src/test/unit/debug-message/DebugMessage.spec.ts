@@ -1,8 +1,9 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TextDocument, TextEditorEdit } from 'vscode';
-import { describe, expect, beforeEach, it, vi } from 'vitest';
+
 import { DebugMessage } from '@/debug-message/DebugMessage';
-import { ExtensionProperties, Message } from '@/typings/extension/types';
 import { LanguageProcessor } from '@/debug-message/types';
+import { ExtensionProperties, Message } from '@/typings/extension/types';
 
 class TestDebugMessage extends DebugMessage {
   insertMessage(

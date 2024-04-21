@@ -1,5 +1,6 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Position, Range, TextDocument, TextEditorEdit } from 'vscode';
-import { describe, expect, beforeEach, afterEach, it, vi } from 'vitest';
+
 import { GeneralDebugMessage } from '@/debug-message/GeneralDebugMessage';
 import { LanguageProcessor } from '@/debug-message/types';
 import { ExtensionProperties } from '@/typings';
@@ -64,14 +65,7 @@ describe('DebugMessage', () => {
     });
 
     it('应该在指定行插入调试日志', () => {
-      debugMessage.insertMessage(
-        textEditor,
-        document,
-        selectedVar,
-        lineOfSelectedVar,
-        tabSize,
-        extensionProperties,
-      );
+      debugMessage.insertMessage(textEditor, document, selectedVar, lineOfSelectedVar, tabSize, extensionProperties);
 
       // 这里增加换行符，不清楚 vscode 是不是默认插入有换行符，本身这里就是 mock
       expect(textEditor.insert).toHaveBeenCalledWith(

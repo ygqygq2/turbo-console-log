@@ -11,8 +11,7 @@ export function spacesBeforeLine(
   // 获取指定行
   const textLine = document.lineAt(lineNumber);
   // 获取指定行第一个非空白字符的索引
-  const lineFirstNonWhitespaceCharacterIndex =
-    textLine.firstNonWhitespaceCharacterIndex;
+  const lineFirstNonWhitespaceCharacterIndex = textLine.firstNonWhitespaceCharacterIndex;
   // 返回指定行号前空格的数量
   return textLine.text
     .split('')

@@ -1,7 +1,8 @@
 import { TextDocument } from 'vscode';
+
 import { BracketType, MultilineContextVariable } from '../typings';
-import { locBrackets } from './locBrackets';
 import { closingContextLine } from './closingContextLine';
+import { locBrackets } from './locBrackets';
 
 // 导出一个函数，用于获取多行上下文变量
 export function getMultiLineContextVariable(
@@ -15,10 +16,7 @@ export function getMultiLineContextVariable(
   innerScope = true,
 ): MultilineContextVariable | null {
   // 获取括号的位置
-  const { openingBrackets, closingBrackets } = locBrackets(
-    document.lineAt(lineNum).text,
-    bracketType,
-  );
+  const { openingBrackets, closingBrackets } = locBrackets(document.lineAt(lineNum).text, bracketType);
   // 如果为内部作用域，并且括号类型相同，则返回null
   if (innerScope && openingBrackets !== 0 && openingBrackets === closingBrackets) {
     return null;

@@ -1,4 +1,5 @@
 import { TextDocument, TextEditorEdit } from 'vscode';
+
 import { ExtensionProperties, Message } from '../typings';
 import { LanguageProcessor } from './types';
 

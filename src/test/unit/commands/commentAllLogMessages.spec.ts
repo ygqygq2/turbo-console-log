@@ -1,7 +1,8 @@
-import { commentAllLogMessagesCommand } from '@/commands/commentAllLogMessages';
-import { ExtensionProperties } from '@/typings';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Position, Range, Selection, TextDocument, TextEditor, TextEditorEdit, window } from 'vscode';
+
+import { commentAllLogMessagesCommand } from '@/commands/commentAllLogMessages';
+import { ExtensionProperties } from '@/typings';
 
 vi.mock('vscode');
 const { mockLogger } = await vi.hoisted(() => import('@/test/globalMocks'));

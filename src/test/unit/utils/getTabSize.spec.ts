@@ -1,6 +1,7 @@
-import { getTabSize } from '@/utils/getTabSize';
 import { expectTypeOf } from 'expect-type';
 import { describe, expect, it } from 'vitest';
+
+import { getTabSize } from '@/utils/getTabSize';
 
 describe('getTabSize', () => {
   it('should return 4 if tabSize is not provided', () => {

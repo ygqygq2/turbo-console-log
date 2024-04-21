@@ -1,6 +1,8 @@
+import * as vscode from 'vscode';
+
 import { logger } from '@/extension';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
-import * as vscode from 'vscode';
+
 import { Command, ExtensionProperties } from '../typings';
 import { getTabSize } from '../utils/getTabSize';
 

@@ -1,7 +1,8 @@
 import { expectTypeOf } from 'expect-type';
-import { ExtensionProperties } from '@/typings/extension/types';
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { GeneralLanguageProcessor } from '@/debug-message/LanguageProcessor';
-import { describe, expect, beforeEach, it } from 'vitest';
+import { ExtensionProperties } from '@/typings/extension/types';
 
 describe('GeneralLanguageProcessor', () => {
   const logFunction: ExtensionProperties['logFunction'] = {
@@ -69,11 +70,7 @@ describe('GeneralLanguageProcessor', () => {
               default:
                 expectedResult = `${logFunctionByLanguageId || logFunction[languageId]}(${variableName})`;
             }
-            const result = languageProcessor.getPrintStatement(
-              variableName,
-              logFunctionByLanguageId,
-              semicolon,
-            );
+            const result = languageProcessor.getPrintStatement(variableName, logFunctionByLanguageId, semicolon);
             expect(result).toBe(expectedResult);
           });
         };
