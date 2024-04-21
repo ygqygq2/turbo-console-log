@@ -1,0 +1,4 @@
+{
+  "src/**/*.{js,ts,json}": "pnpm run lint",
+  "src/**/*.{js,ts,json,mdx}": ["prettier --write"]
+}
