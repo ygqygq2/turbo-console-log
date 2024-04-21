@@ -1,0 +1,4 @@
+{
+  "pre-commit": "pnpm lint-staged",
+  "preserveUnused": true
+}
