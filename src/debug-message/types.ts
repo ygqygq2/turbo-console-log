@@ -6,6 +6,7 @@ export interface LanguageProcessor {
   getPrintString(): string;
   getPrintStatement(variableName: string, logFunctionByLanguageId?: string, semicolon?: string): string;
   getSingleLineCommentSymbol(): string;
+  getExtraSpace(): string;
   getConcatenatedString(): string;
   variableToString(variableName: string): string;
 }

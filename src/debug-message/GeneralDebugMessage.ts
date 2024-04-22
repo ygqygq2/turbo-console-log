@@ -116,9 +116,11 @@ export class GeneralDebugMessage extends DebugMessage {
       ? `file: ${fileName}:${lineOfLogMsg} ${delimiterInsideMessage} `
       : '';
     // 处理 Rust 特殊情况
-    const rustSpecial = lp?.getLanguageId() === 'rust' ? ' {}' : '';
+    const extraSpace = lp?.getExtraSpace();
+    const concatString = lp?.getConcatenatedString();
+    const variable = lp?.variableToString(selectedVar);
     // 构建 content
-    const content = `${quote}${logMessagePrefix}${prefix}${fileNameAndLineNum}${selectedVar}${logMessageSuffix}${rustSpecial}${quote}${lp?.getConcatenatedString()}${lp?.variableToString(selectedVar)}`;
+    const content = `${quote}${logMessagePrefix}${prefix}${fileNameAndLineNum}${selectedVar}${logMessageSuffix}${extraSpace}${quote}${concatString}${variable}`;
     return lp?.getPrintStatement(content, logFunctionByLanguageId, semicolon);
   }
 

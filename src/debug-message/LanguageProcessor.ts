@@ -133,6 +133,33 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
+  public getExtraSpace(): string {
+    switch (this.languageId) {
+      case 'javascript':
+      case 'typescript':
+      case 'go':
+      case 'swift':
+      case 'python':
+      case 'lua':
+      case 'shellscript':
+        return '';
+      case 'java':
+      case 'kotlin':
+      case 'scala':
+      case 'csharp':
+      case 'coffeescript':
+      case 'ruby':
+      case 'perl':
+      case 'php':
+      case 'cpp':
+        return ' ';
+      case 'rust':
+        return ' {}';
+      default:
+        return '';
+    }
+  }
+
   public getConcatenatedString(): string {
     switch (this.languageId) {
       case 'javascript':
@@ -149,14 +176,14 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'csharp':
       case 'coffeescript':
       case 'ruby':
-        return ' + " " + ';
+        return ' + ';
       case 'shellscript':
         return ' ';
       case 'perl':
       case 'php':
-        return ' . " " . ';
+        return ' . ';
       case 'cpp':
-        return ' << " " << ';
+        return ' << ';
       default:
         return ', ';
     }
