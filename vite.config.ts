@@ -17,7 +17,7 @@ export default defineConfig({
     ],
   },
   test: {
-    include: ['src/test/unit/**/*.spec.ts', 'src/test/suite/**/*.test.ts'],
+    include: ['src/test/unit/**/*.spec.ts'],
     coverage: {
       exclude: ['node_modules', 'out', 'src/test', 'src/typings', '.vscode-test'],
     },
