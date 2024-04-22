@@ -2,10 +2,10 @@
   "name": "turbo-print-log",
   "displayName": "Turbo Console Log for more language",
   "description": "选中变量，根据不同语言增加一行变量打印日志",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "publisher": "ygqygq2",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.88.0"
   },
   "icon": "images/icon.png",
   "categories": [
@@ -153,10 +153,10 @@
     "package": "vsce package --no-dependencies",
     "publish": "vsce publish --no-dependencies",
     "clean": "rimraf out/",
-    "test-compile": "npm run clean && tsc -p ./ && npm run compile",
-    "test": "npm run test-compile && vscode-test",
-    "test-grep": "vscode-test -f",
-    "test:suite:mocha": "tsc -p ./ && node out/test/runTests.js",
+    "test-compile": "npm run clean && tsc -p tsconfig.mocha.json && npm run compile",
+    "test": "TS_NODE_PROJECT=tsconfig.mocha.json vscode-test",
+    "test-grep": "TS_NODE_PROJECT=tsconfig.mocha.json vscode-test -f",
+    "test:suite:mocha": "TS_NODE_PROJECT=tsconfig.mocha.json npm run test-compile && node out/test/runTests.js",
     "test:suite": "vitest suite --watch=false",
     "test:unit": "vitest unit --watch=false",
     "test:coverage": "vitest run --coverage",
@@ -174,7 +174,7 @@
     "@types/node": "^20.12.7",
     "@types/sinon": "^17.0.3",
     "@types/tmp": "^0.2.6",
-    "@types/vscode": "^1.85.0",
+    "@types/vscode": "^1.88.0",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "@vitest/coverage-v8": "^1.5.0",

@@ -80,6 +80,7 @@ Properties:
 - swift
 - shellscript
 - lua
+- coffeescript
 
 ## License
 

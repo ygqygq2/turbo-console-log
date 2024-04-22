@@ -1,0 +1,11 @@
+{
+  "turboConsoleLog.wrapLogMessage": false,
+  "turboConsoleLog.logMessagePrefix": "🚀",
+  "turboConsoleLog.logMessageSuffix": ":",
+  "turboConsoleLog.includeFileNameAndLineNum": false,
+  "turboConsoleLog.addSemicolonInTheEnd": false,
+  "turboConsoleLog.insertEmptyLineBeforeLogMessage": true,
+  "turboConsoleLog.insertEmptyLineAfterLogMessage": false,
+  "turboConsoleLog.delimiterInsideMessage": "~",
+  "turboConsoleLog.quote": "\""
+}

@@ -1,9 +1,16 @@
 import { ExtensionProperties } from '@/typings/extension/types';
+import { processVariableName } from '@/utils/utils';
 
 import { LanguageProcessor } from './types';
 
 export class GeneralLanguageProcessor implements LanguageProcessor {
-  constructor(private readonly languageId: string) {}
+  constructor(private readonly languageId: string) {
+    this.languageId = languageId;
+  }
+
+  public getLanguageId(): string {
+    return this.languageId;
+  }
 
   // 根据 languageId 获取对应的 logFunction
   public getLogFunction(logFunction: ExtensionProperties['logFunction']): string {
@@ -17,6 +24,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
+      case 'coffeescript':
         return 'console.log';
       case 'python':
         return 'print';
@@ -37,7 +45,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'perl':
       case 'lua':
         return 'print';
-      case 'c++':
+      case 'cpp':
         return 'std::cout';
       case 'rust':
         return 'println!';
@@ -49,8 +57,14 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     }
   }
 
-  public getPrintStatement(variableName: string, logFunctionByLanguageId?: string, semicolon: string = ''): string {
+  public getPrintStatement(
+    variableName: string,
+    logFunctionByLanguageId?: string,
+    quote: string = '"',
+    semicolon: string = '',
+  ): string {
     const printFunction = logFunctionByLanguageId || this.getPrintString();
+    const isSingleQuote = quote === "'";
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
@@ -66,44 +80,27 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'lua':
         return `${printFunction}(${variableName})`;
       case 'php': {
-        const count = (variableName.match(/\$/g) || []).length; // 统计字符串中的 $ 符号个数
-        let escapedVariableName = variableName;
-        if (count >= 2 && count % 2 === 0) {
-          const halfCount = count / 2;
-          let escapedCount = 0;
-          escapedVariableName = variableName.replace(/\$/g, (match) => {
-            if (escapedCount < halfCount) {
-              escapedCount++;
-              return '\\$';
-            }
-            return match;
-          });
+        if (!isSingleQuote) {
+          const escapedVariableName = processVariableName(variableName);
+          return `${printFunction} ${escapedVariableName};`;
         }
-        return `${printFunction} ${escapedVariableName};`;
+        return `${printFunction} ${variableName};`;
       }
       case 'perl': {
-        const count = (variableName.match(/\$/g) || []).length; // 统计字符串中的 $ 符号个数
-        let escapedVariableName = variableName;
-        if (count >= 2 && count % 2 === 0) {
-          const halfCount = count / 2;
-          let escapedCount = 0;
-          escapedVariableName = variableName.replace(/\$/g, (match) => {
-            if (escapedCount < halfCount) {
-              escapedCount++;
-              return '\\$';
-            }
-            return match;
-          });
+        if (!isSingleQuote) {
+          const escapedVariableName = processVariableName(variableName);
+          return `${printFunction} ${escapedVariableName};\n`;
         }
-        return `${printFunction} ${escapedVariableName};\n`;
+        return `${printFunction} ${variableName};`;
       }
       case 'ruby':
       case 'shellscript':
+      case 'coffeescript':
         return `${printFunction} ${variableName}`;
-      case 'c++':
+      case 'cpp':
         return `${printFunction} << ${variableName} << std::endl;`;
       case 'rust':
-        return `${printFunction}!("{}", ${variableName});`;
+        return `${printFunction}(${variableName});`;
       default:
         return `${printFunction}(${variableName})`;
     }
@@ -113,20 +110,21 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
-      case 'php':
       case 'csharp':
-      case 'c++':
+      case 'cpp':
       case 'rust':
       case 'kotlin':
       case 'scala':
+      case 'java':
+      case 'go':
+      case 'swift':
         return '//';
       case 'python':
       case 'ruby':
       case 'perl':
-      case 'go':
-      case 'java':
-      case 'swift':
       case 'shellscript':
+      case 'coffeescript':
+      case 'php':
         return '#';
       case 'lua':
         return '--';
@@ -143,22 +141,22 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'swift':
       case 'python':
       case 'rust':
-      case 'kotlin':
-      case 'scala':
       case 'lua':
         return ', ';
       case 'java':
+      case 'kotlin':
+      case 'scala':
       case 'csharp':
-        return ' + ';
+      case 'coffeescript':
       case 'ruby':
+        return ' + " " + ';
       case 'shellscript':
         return ' ';
       case 'perl':
-        return ' . " " . ';
       case 'php':
-        return ' . ';
-      case 'c++':
-        return ' << ';
+        return ' . " " . ';
+      case 'cpp':
+        return ' << " " << ';
       default:
         return ', ';
     }
@@ -174,11 +172,12 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'python':
       case 'swift':
       case 'ruby':
-      case 'c++':
+      case 'cpp':
       case 'rust':
       case 'kotlin':
       case 'scala':
       case 'lua':
+      case 'coffeescript':
         return `${variableName}`;
       case 'perl':
       case 'php':

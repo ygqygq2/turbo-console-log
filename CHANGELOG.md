@@ -6,6 +6,12 @@ All notable changes to the "turbo-console-log" extension will be documented in t
 
 ## 新增功能 🌱
 
+- feat: 增加 coffeescript 支持
+
+# [3.0.6]
+
+## 新增功能 🌱
+
 - feat: 增加几个语言支持
 
 # [3.0.5]

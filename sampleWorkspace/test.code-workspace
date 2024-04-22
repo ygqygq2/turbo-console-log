@@ -1,10 +1,10 @@
 {
   "folders": [
-    { "path": "file-header" },
-    { "path": "file-header-project" },
-    { "path": "function-comment-for-ts" },
-    { "path": "function-comment-for-go" },
+    { "path": "default-settings" },
     { "path": "workspace" },
   ],
-  "settings": {},
+  "settings": {
+    "mathiasfrohlich.kotlin": true,
+    "scala-lang.scala": true
+  }
 }

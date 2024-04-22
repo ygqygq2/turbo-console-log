@@ -6,18 +6,17 @@ import { LanguageProcessor } from '@/debug-message/types';
 import { ExtensionProperties, Message } from '@/typings/extension/types';
 
 class TestDebugMessage extends DebugMessage {
-  insertMessage(
+  generateAndInsertDebugMessage(
     _textEditor: TextEditorEdit,
     _document: TextDocument,
     _selectedVar: string,
     _lineOfSelectedVar: number,
-    _tabSize: number,
     _extensionProperties: ExtensionProperties,
   ): void {
     console.log('insertMessage called');
   }
 
-  detectAll(
+  detectAllDebugLine(
     _document: TextDocument,
     _logFunctionByLanguageId: string,
     _logMessagePrefix: string,

@@ -4,7 +4,6 @@ import { logger } from '@/extension';
 import { instanceDebugMessage } from '@/utils/instanceDebugMessage';
 
 import { Command, ExtensionProperties } from '../typings';
-import { getTabSize } from '../utils/getTabSize';
 
 // 插入调试日志/更新调试日志行号
 export function displayLogMessageCommand(): Command {
@@ -24,8 +23,6 @@ export function displayLogMessageCommand(): Command {
         return;
       }
       const { debugMessage } = instanceDebugMessage(editor);
-      // 获取tab大小
-      const tabSize: number | string = getTabSize(editor.options.tabSize);
       // 获取文档
       const document: vscode.TextDocument = editor.document;
       // 遍历当前选择的范围
@@ -34,13 +31,22 @@ export function displayLogMessageCommand(): Command {
         const selection: vscode.Selection = editor.selections[index];
 
         // 获取当前选择文本
-        // if rangeUnderCursor is undefined, `document.getText(undefined)` will return the entire file.
-        // 如果rangeUnderCursor为undefined，则返回整个文档
         const selectedVar =
           (selection && document.getText(selection)) ||
           (() => {
             // 获取当前光标所在单词范围
-            const rangeUnderCursor = document.getWordRangeAtPosition(selection.active);
+            let rangeUnderCursor = document.getWordRangeAtPosition(selection.active);
+            if (!rangeUnderCursor) {
+              // 如果没有找到匹配的单词，那么向后查找，直到找到一个空格或引号
+              let position = selection.active;
+              while (position.character < document.lineAt(position.line).text.length) {
+                position = position.translate(0, 1);
+                rangeUnderCursor = document.getWordRangeAtPosition(position, /\$\w+|\w+/);
+                if (rangeUnderCursor) {
+                  break;
+                }
+              }
+            }
             return (rangeUnderCursor && document.getText(rangeUnderCursor)) || '';
           })();
         // 获取当前光标所在行
@@ -51,12 +57,11 @@ export function displayLogMessageCommand(): Command {
           logger.info('Insert debug log');
           await editor.edit((editBuilder) => {
             // 调用debugMessage.insertMessage函数
-            debugMessage.insertMessage(
+            debugMessage.generateAndInsertDebugMessage(
               editBuilder,
               document,
               selectedVar,
               lineOfSelectedVar,
-              tabSize,
               extensionProperties,
             );
           });

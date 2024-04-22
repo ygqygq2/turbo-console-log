@@ -1,10 +1,20 @@
-import { runTests } from '@vscode/test-electron';
+import { downloadAndUnzipVSCode, resolveCliArgsFromVSCodeExecutablePath, runTests } from '@vscode/test-electron';
+import * as cp from 'child_process';
 import path from 'path';
-
-import { createSettings } from './ready';
 
 async function main() {
   try {
+    const vscodeExecutablePath = await downloadAndUnzipVSCode('1.88.0');
+    const [cliPath, ...args] = resolveCliArgsFromVSCodeExecutablePath(vscodeExecutablePath);
+
+    const extensions = ['mathiasfrohlich.kotlin', 'scala-lang.scala'];
+    const installExtensionsArgs = extensions.map((extension) => ['--install-extension', extension]).flat();
+
+    cp.spawnSync(cliPath, [...args, ...installExtensionsArgs], {
+      encoding: 'utf-8',
+      stdio: 'inherit',
+    });
+
     // The folder containing the Extension Manifest package.json
     // Passed to `--extensionDevelopmentPath`
     const extensionDevelopmentPath = path.resolve(__dirname, '../../');
@@ -14,19 +24,15 @@ async function main() {
     const extensionTestsPath = path.resolve(__dirname, `./suite/index`);
 
     const workspacePath = path.resolve('sampleWorkspace', 'test.code-workspace');
-    const userDataDirectory = await createSettings();
 
-    // Download VS Code, unzip it and run the integration test
     await runTests({
-      version: '1.88.0',
+      vscodeExecutablePath,
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [workspacePath]
         .concat(['--skip-welcome'])
-        .concat(['--disable-extensions'])
         .concat(['--skip-release-notes'])
-        .concat(['--enable-proposed-api'])
-        .concat(['--user-data-dir', userDataDirectory]),
+        .concat(['--enable-proposed-api']),
     });
   } catch (error) {
     console.error('Failed to run tests');

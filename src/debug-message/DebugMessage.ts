@@ -17,17 +17,16 @@ export abstract class DebugMessage {
   }
 
   // 返回消息
-  abstract insertMessage(
+  abstract generateAndInsertDebugMessage(
     textEditor: TextEditorEdit,
     document: TextDocument,
     selectedVar: string,
     lineOfSelectedVar: number,
-    tabSize: number,
     extensionProperties: ExtensionProperties,
   ): void;
 
   // 检测消息
-  abstract detectAll(
+  abstract detectAllDebugLine(
     document: TextDocument,
     logFunctionByLanguageId: string,
     logMessagePrefix: string,

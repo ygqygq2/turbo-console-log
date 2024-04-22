@@ -5,21 +5,47 @@
       "name": "Extension",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--disable-extensions", "--extensionDevelopmentPath=${workspaceFolder}"],
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "${workspaceRoot}/sampleWorkspace/test.code-workspace",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
+      "preLaunchTask": "${defaultBuildTask}",
+      "sourceMaps": true
     },
     {
-      "name": "Test: All",
+      "name": "Test: e2e",
       "type": "extensionHost",
       "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "testConfiguration": "${workspaceFolder}/.vscode-test-debug.mjs",
       "args": [
-        "--disable-extensions",
+        "${workspaceFolder}/sampleWorkspace/test.code-workspace",
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/testsRunner"
       ],
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.mocha.json"
+      },
+      "preLaunchTask": "npm: test-compile",
+      "sourceMaps": true
+    },
+    {
+      "name": "Test: e2e use mocha",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "${workspaceFolder}/sampleWorkspace/test.code-workspace",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+      ],
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json"
+      },
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
+      "preLaunchTask": "npm: test-compile",
+      "sourceMaps": true
     },
     {
       "type": "node",

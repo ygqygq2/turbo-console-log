@@ -30,7 +30,7 @@ export function updateLineNumAllLogMessagesCommand(): Command {
 
       // 检测所有日志消息
       const logFunctionByLanguageId = debugMessage?.getLanguageProcessor().getLogFunction(logFunction);
-      const logMessages: Message[] = debugMessage.detectAll(
+      const logMessages: Message[] = debugMessage.detectAllDebugLine(
         document,
         logFunctionByLanguageId,
         logMessagePrefix,

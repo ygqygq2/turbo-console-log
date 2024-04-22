@@ -13,13 +13,13 @@ export class GeneralDebugMessage extends DebugMessage {
     super(languageProcessor);
   }
 
-  // 返回行
-  public line(selectionLine: number): number {
+  // 返回插入行
+  public getInsertLine(selectionLine: number): number {
     return selectionLine + 1;
   }
 
-  // 返回消息前导空格
-  public spacesBeforeLogMsg(document: TextDocument, selectedVarLine: number, logMsgLine: number): string {
+  // 返回消息缩进空格
+  public getSpacesBeforeLogMsg(document: TextDocument, selectedVarLine: number, logMsgLine: number): string {
     const selectedVarTextLine = document.lineAt(selectedVarLine);
     const selectedVarTextLineFirstNonWhitespaceCharacterIndex = selectedVarTextLine.firstNonWhitespaceCharacterIndex;
     const spacesBeforeSelectedVarLine = selectedVarTextLine.text
@@ -40,11 +40,11 @@ export class GeneralDebugMessage extends DebugMessage {
     return spacesBeforeSelectedVarLine;
   }
 
-  private baseDebuggingMsg(
+  private insertDebugMessage(
     document: TextDocument,
     textEditor: TextEditorEdit,
     lineOfLogMsg: number,
-    debuggingMsg: string,
+    debugMsgLineContent: string,
     insertEmptyLineBeforeLogMessage: ExtensionProperties['insertEmptyLineBeforeLogMessage'],
     insertEmptyLineAfterLogMessage: ExtensionProperties['insertEmptyLineAfterLogMessage'],
   ): void {
@@ -53,42 +53,38 @@ export class GeneralDebugMessage extends DebugMessage {
       new Position(lineOfLogMsg >= document.lineCount ? document.lineCount : lineOfLogMsg, 0),
       `${insertEmptyLineBeforeLogMessage ? '\n' : ''}${
         lineOfLogMsg === document.lineCount ? '\n' : ''
-      }${debuggingMsg}\n${insertEmptyLineAfterLogMessage ? '\n' : ''}`,
+      }${debugMsgLineContent}\n${insertEmptyLineAfterLogMessage ? '\n' : ''}`,
     );
   }
 
   // 构造调试消息
-  private constructDebuggingMsg(
+  private generateDebugLineContent(
     extensionProperties: ExtensionProperties,
-    debuggingMsgContent: string,
+    debugMsgContent: string,
     spacesBeforeMsg: string,
   ): string {
     const { logMessagePrefix, quote, addSemicolonInTheEnd, wrapLogMessage } = extensionProperties;
-    const logStatement = `${this.getLanguageProcessor()?.getPrintString()}${quote}${logMessagePrefix} ${'-'.repeat(debuggingMsgContent.length - 16)}${logMessagePrefix}${quote}`;
+    // 构造日志语句
+    const logStatement = `${this.getLanguageProcessor()?.getPrintString()}${quote}${logMessagePrefix} ${'-'.repeat(debugMsgContent.length - 16)}${logMessagePrefix}${quote}`;
+    // 根据是否需要在末尾添加分号来构造包装消息
     const wrappingMsg = `${logStatement}${addSemicolonInTheEnd ? ';' : ''}`;
-    const debuggingMsg: string = wrapLogMessage
-      ? `${spacesBeforeMsg}${wrappingMsg}\n${spacesBeforeMsg}${debuggingMsgContent}\n${spacesBeforeMsg}${wrappingMsg}`
-      : `${spacesBeforeMsg}${debuggingMsgContent}`;
-    return debuggingMsg;
+    // 根据是否需要包装日志消息来构造调试消息
+    const debugMsg: string = wrapLogMessage
+      ? `${spacesBeforeMsg}${wrappingMsg}\n${spacesBeforeMsg}${debugMsgContent}\n${spacesBeforeMsg}${wrappingMsg}`
+      : `${spacesBeforeMsg}${debugMsgContent}`;
+
+    return debugMsg;
   }
 
   // 构造调试信息内容
-  private constructDebuggingMsgContent(
+  private generateDebugMessage(
     document: TextDocument,
     selectedVar: string,
-    lineOfSelectedVar: number,
     lineOfLogMsg: number,
     extensionProperties: Omit<ExtensionProperties, 'wrapLogMessage' | 'insertEmptyLineAfterLogMessage'>,
   ): string {
-    // 获取文件名
-    const fileName = document.fileName.includes('/')
-      ? document.fileName.split('/')[document.fileName.split('/').length - 1]
-      : document.fileName.split('\\')[document.fileName.split('\\').length - 1];
-    // 判断是否添加分号
-    const semicolon: string = extensionProperties.addSemicolonInTheEnd ? ';' : '';
-    // 构建调试信息
-    lineOfLogMsg + (extensionProperties.insertEmptyLineBeforeLogMessage ? 2 : 1);
     const {
+      addSemicolonInTheEnd,
       logMessagePrefix,
       logFunction,
       quote,
@@ -97,61 +93,67 @@ export class GeneralDebugMessage extends DebugMessage {
       insertEmptyLineBeforeLogMessage,
       logMessageSuffix,
     } = extensionProperties;
-    const logFunctionByLanguageId = this.getLanguageProcessor()?.getLogFunction(logFunction);
-    const content = `${quote}${logMessagePrefix}${
+
+    // 获取文件名
+    const fileName = document.fileName.includes('/')
+      ? document.fileName.split('/')[document.fileName.split('/').length - 1]
+      : document.fileName.split('\\')[document.fileName.split('\\').length - 1];
+    // 判断是否添加分号
+    const semicolon: string = addSemicolonInTheEnd ? ';' : '';
+    // 语言处理器
+    const lp = this.getLanguageProcessor();
+    // 日志中的行号，如果需要在消息前添加空行，则行号加 2，否则加 1
+    lineOfLogMsg = lineOfLogMsg + (insertEmptyLineBeforeLogMessage ? 2 : 1);
+    // 获取日志输出函数
+    const logFunctionByLanguageId = lp?.getLogFunction(logFunction) || '';
+    // 处理 logMessagePrefix
+    const prefix =
       logMessagePrefix.length !== 0 && logMessagePrefix !== `${delimiterInsideMessage} `
         ? ` ${delimiterInsideMessage} `
-        : ''
-    }${
-      includeFileNameAndLineNum
-        ? `file: ${fileName}:${lineOfLogMsg + (insertEmptyLineBeforeLogMessage ? 2 : 1)} ${delimiterInsideMessage} `
-        : ''
-    }${selectedVar}${logMessageSuffix}${quote}${this.getLanguageProcessor()?.getConcatenatedString()}${this.getLanguageProcessor()?.variableToString(selectedVar)}`;
-    if (!logFunctionByLanguageId) {
-      return this.getLanguageProcessor()?.getPrintStatement(content, '', semicolon);
-    }
-    return this.getLanguageProcessor()?.getPrintStatement(content, logFunctionByLanguageId, semicolon);
+        : '';
+    // 处理 fileNameAndLineNum
+    const fileNameAndLineNum = includeFileNameAndLineNum
+      ? `file: ${fileName}:${lineOfLogMsg} ${delimiterInsideMessage} `
+      : '';
+    // 处理 Rust 特殊情况
+    const rustSpecial = lp?.getLanguageId() === 'rust' ? ' {}' : '';
+    // 构建 content
+    const content = `${quote}${logMessagePrefix}${prefix}${fileNameAndLineNum}${selectedVar}${logMessageSuffix}${rustSpecial}${quote}${lp?.getConcatenatedString()}${lp?.variableToString(selectedVar)}`;
+    return lp?.getPrintStatement(content, logFunctionByLanguageId, semicolon);
   }
 
-  /**
-   * 生成调试信息并将其添加到文档中
-   *
-   * @param {TextEditorEdit} textEditor - 文本编辑器编辑对象
-   * @param {TextDocument} document - 文本文档对象
-   * @param {string} selectedVar - 选中的变量
-   * @param {number} lineOfSelectedVar - 选中变量所在行号
-   * @param {number} tabSize - 制表符大小
-   * @param {ExtensionProperties} extensionProperties - 扩展属性
-   * @returns {void}
-   */
-  public insertMessage(
+  // 生成调试信息并将其添加到文档中
+  public generateAndInsertDebugMessage(
     textEditor: TextEditorEdit,
     document: TextDocument,
     selectedVar: string,
     lineOfSelectedVar: number,
-    tabSize: number,
     extensionProperties: ExtensionProperties,
   ): void {
-    const lineOfLogMsg: number = this.line(lineOfSelectedVar);
-    const spacesBeforeMsg: string = this.spacesBeforeLogMsg(document, lineOfSelectedVar, lineOfLogMsg);
-    // 构造调试信息内容
-    const debuggingMsgContent: string = this.constructDebuggingMsgContent(
+    // 日志插入行
+    const lineOfLogMsg: number = this.getInsertLine(lineOfSelectedVar);
+    // 日志插入缩进空格
+    const spacesBeforeMsg: string = this.getSpacesBeforeLogMsg(document, lineOfSelectedVar, lineOfLogMsg);
+    // 生成调试信息内容
+    const debugMsgContent: string = this.generateDebugMessage(
       document,
       selectedVar,
-      lineOfSelectedVar,
       lineOfLogMsg,
       omit(extensionProperties, ['wrapLogMessage', 'insertEmptyLineAfterLogMessage']),
     );
-    // 构造调试信息
-    const debuggingMsg: string = this.constructDebuggingMsg(extensionProperties, debuggingMsgContent, spacesBeforeMsg);
-    // 获取选中变量的行
-    // const selectedVarLine = document.lineAt(lineOfSelectedVar);
-    // 添加基础调试信息
-    this.baseDebuggingMsg(
+    // 生成调试信息的一行内容，包含空格缩进
+    const debugMsgLineContent: string = this.generateDebugLineContent(
+      extensionProperties,
+      debugMsgContent,
+      spacesBeforeMsg,
+    );
+
+    // 日志插入文件
+    this.insertDebugMessage(
       document,
       textEditor,
       lineOfLogMsg,
-      debuggingMsg,
+      debugMsgLineContent,
       extensionProperties.insertEmptyLineBeforeLogMessage,
       extensionProperties.insertEmptyLineAfterLogMessage,
     );
@@ -162,7 +164,7 @@ export class GeneralDebugMessage extends DebugMessage {
   }
 
   // 检测文档中的所有消息
-  public detectAll = (
+  public detectAllDebugLine = (
     document: TextDocument,
     logFunctionByLanguageId: string,
     logMessagePrefix: string,
@@ -184,7 +186,7 @@ export class GeneralDebugMessage extends DebugMessage {
           lines: [],
         };
         // 获取消息前导空格
-        logMessage.spaces = this.spacesBeforeLogMsg(document, i, i);
+        logMessage.spaces = this.getSpacesBeforeLogMsg(document, i, i);
         // 获取关闭括号行号
         const closedParenthesisLine = closingContextLine(document, i, BracketType.PARENTHESIS);
         // 保存多行文本到一起，用于后面匹配

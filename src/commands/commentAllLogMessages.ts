@@ -33,7 +33,7 @@ export function commentAllLogMessagesCommand(): Command {
 
       const document: vscode.TextDocument = editor.document;
       // 检测所有log消息
-      const logMessages: Message[] = debugMessage.detectAll(
+      const logMessages: Message[] = debugMessage.detectAllDebugLine(
         document,
         logFunctionToUse(),
         logMessagePrefix,

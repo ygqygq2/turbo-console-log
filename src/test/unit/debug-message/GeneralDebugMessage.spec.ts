@@ -17,6 +17,7 @@ describe('DebugMessage', () => {
 
   beforeEach(() => {
     languageProcessor = {
+      getLanguageId: vi.fn().mockReturnValue('javascript'),
       getSingleLineCommentSymbol: vi.fn().mockReturnValue('//'),
       getPrintString: vi.fn().mockReturnValue('console.log'),
       variableToString: vi.fn().mockReturnValue('value'),
@@ -32,7 +33,6 @@ describe('DebugMessage', () => {
     let document: TextDocument;
     let selectedVar: string;
     let lineOfSelectedVar: number;
-    let tabSize: number;
     let extensionProperties: ExtensionProperties;
 
     beforeEach(() => {
@@ -49,7 +49,6 @@ describe('DebugMessage', () => {
       } as unknown as TextDocument;
       selectedVar = 'value';
       lineOfSelectedVar = 5;
-      tabSize = 2;
       extensionProperties = {
         logMessagePrefix: '🚀',
         quote: "'",
@@ -65,7 +64,13 @@ describe('DebugMessage', () => {
     });
 
     it('应该在指定行插入调试日志', () => {
-      debugMessage.insertMessage(textEditor, document, selectedVar, lineOfSelectedVar, tabSize, extensionProperties);
+      debugMessage.generateAndInsertDebugMessage(
+        textEditor,
+        document,
+        selectedVar,
+        lineOfSelectedVar,
+        extensionProperties,
+      );
 
       // 这里增加换行符，不清楚 vscode 是不是默认插入有换行符，本身这里就是 mock
       expect(textEditor.insert).toHaveBeenCalledWith(
@@ -112,7 +117,7 @@ describe('DebugMessage', () => {
     });
 
     it('应该返回插入的调试日志数组信息', () => {
-      const result = debugMessage.detectAll(
+      const result = debugMessage.detectAllDebugLine(
         document,
         logFunctionByLanguageId,
         logMessagePrefix,

@@ -21,9 +21,11 @@
   },
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.d.ts",
+    "./src/test/ready.ts",
+    "./src/test/runTests.ts",
+    "./src/test/suite/**/*.ts",
     "./node_modules/vscode/vscode.d.ts",
     "./node_modules/vscode/lib/*"
   ],
-  "exclude": ["node_modules", ".vscode-test", "out"]
+  "exclude": ["node_modules", ".vscode-test", "out", "./src/test/unit"]
 }
