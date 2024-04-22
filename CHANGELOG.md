@@ -2,7 +2,13 @@
 
 All notable changes to the "turbo-console-log" extension will be documented in this file.
 
-# [3.0.6]
+# [3.0.7]
+
+## 功能优化
+
+- refactor: 优化打印语句
+
+# [3.0.7]
 
 ## 新增功能 🌱
 

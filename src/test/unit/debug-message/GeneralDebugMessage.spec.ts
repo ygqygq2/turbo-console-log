@@ -21,6 +21,7 @@ describe('DebugMessage', () => {
       getSingleLineCommentSymbol: vi.fn().mockReturnValue('//'),
       getPrintString: vi.fn().mockReturnValue('console.log'),
       variableToString: vi.fn().mockReturnValue('value'),
+      getExtraSpace: vi.fn().mockReturnValue(''),
       getConcatenatedString: vi.fn().mockReturnValue(', '),
       getPrintStatement: vi.fn().mockReturnValue(`console.log('🚀 ~ test.js: 6 ~ value:', value);`),
       getLogFunction: vi.fn().mockReturnValue('log'),
