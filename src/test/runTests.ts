@@ -25,6 +25,8 @@ async function main() {
 
     const workspacePath = path.resolve('sampleWorkspace', 'test.code-workspace');
 
+    process.env.TS_NODE_PROJECT = 'tsconfig.mocha.json';
+
     await runTests({
       vscodeExecutablePath,
       extensionDevelopmentPath,

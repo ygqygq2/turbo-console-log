@@ -27,12 +27,18 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm i --frozen-lockfile --ignore-scripts
-      - run: |
-          export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+      - name: Linux test
+        if: runner.os == 'Linux'
+        env:
+          DBUS_SESSION_BUS_ADDRESS: unix:path=/run/dbus/system_bus_socket
+          TS_NODE_PROJECT: tsconfig.mocha.json
+        run: |
           sudo systemctl start dbus
           xvfb-run -a pnpm test:suite:mocha
-        if: runner.os == 'Linux'
-      - run: pnpm test:suite:mocha
+      - name: Other platform test
         if: runner.os != 'Linux'
+        env:
+          TS_NODE_PROJECT: tsconfig.mocha.json
+        run: pnpm test:suite:mocha
       - run: pnpm run test:coverage
       - run: vsce package --no-dependencies
