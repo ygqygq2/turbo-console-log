@@ -23,19 +23,24 @@ async function main() {
     // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(__dirname, `./suite/index`);
 
-    const workspacePath = path.resolve('sampleWorkspace', 'test.code-workspace');
-
     process.env.TS_NODE_PROJECT = path.resolve(extensionDevelopmentPath, './tsconfig.mocha.json');
 
-    await runTests({
-      vscodeExecutablePath,
-      extensionDevelopmentPath,
-      extensionTestsPath,
-      launchArgs: [workspacePath]
-        .concat(['--skip-welcome'])
-        .concat(['--skip-release-notes'])
-        .concat(['--enable-proposed-api']),
-    });
+    const workspaceFile = 'test.code-workspace';
+    const workspaceFolds = ['default-settings'];
+
+    for (const fold of workspaceFolds) {
+      const workspacePath = path.resolve('sampleWorkspace', fold, workspaceFile);
+
+      await runTests({
+        vscodeExecutablePath,
+        extensionDevelopmentPath,
+        extensionTestsPath,
+        launchArgs: [workspacePath]
+          .concat(['--skip-welcome'])
+          .concat(['--skip-release-notes'])
+          .concat(['--enable-proposed-api']),
+      });
+    }
   } catch (error) {
     console.error('Failed to run tests');
     if (error instanceof Error) {

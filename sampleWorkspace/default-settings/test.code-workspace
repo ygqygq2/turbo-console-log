@@ -1,7 +1,6 @@
 {
   "folders": [
-    { "path": "default-settings" },
-    { "path": "workspace" },
+    { "path": "add-log" },
   ],
   "settings": {
     "mathiasfrohlich.kotlin": true,

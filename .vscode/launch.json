@@ -7,7 +7,7 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "${workspaceRoot}/sampleWorkspace/test.code-workspace",
+        "${workspaceRoot}/sampleWorkspace/default-settings/test.code-workspace",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
@@ -21,7 +21,7 @@
       "runtimeExecutable": "${execPath}",
       "testConfiguration": "${workspaceFolder}/.vscode-test-debug.mjs",
       "args": [
-        "${workspaceFolder}/sampleWorkspace/test.code-workspace",
+        "${workspaceFolder}/sampleWorkspace/default-settings/test.code-workspace",
         "--extensionDevelopmentPath=${workspaceFolder}",
       ],
       "env": {
@@ -36,7 +36,7 @@
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "${workspaceFolder}/sampleWorkspace/test.code-workspace",
+        "${workspaceFolder}/sampleWorkspace/default-settings/test.code-workspace",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],

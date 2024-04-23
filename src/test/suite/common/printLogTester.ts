@@ -9,7 +9,7 @@ import { executeCommandOnFile } from './executeCommandOnFile';
 
 export function printLogTester(testInfo: TestInfo) {
   testInfo.forEach((item) => {
-    const { testName, workspaceName, files } = item;
+    const { testName, workspaceFoldName, files } = item;
     describe(`Extension Integration Test: add print log for [${testName}]`, function () {
       this.timeout(200000);
       files.forEach((fileInfo) => {
@@ -18,8 +18,14 @@ export function printLogTester(testInfo: TestInfo) {
         it(`should add print log for [${ext}] in file ${fileName}`, async () => {
           const commandName = 'turboConsoleLog.displayLogMessage';
           const resultFileName = fileName.replace(ext, `.result${ext}`);
-          const { actual } = await executeCommandOnFile(commandName, workspaceName, fileName, cursorPosition, false);
-          const expected = await getText(workspaceName, resultFileName);
+          const { actual } = await executeCommandOnFile(
+            commandName,
+            workspaceFoldName,
+            fileName,
+            cursorPosition,
+            false,
+          );
+          const expected = await getText(workspaceFoldName, resultFileName);
           assert.equal(actual, expected);
         });
       });

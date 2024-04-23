@@ -3,8 +3,8 @@ import { TestInfo } from './types';
 
 const testInfo: TestInfo = [
   {
-    testName: 'defaultSettings',
-    workspaceName: 'default-settings',
+    testName: 'addLog',
+    workspaceFoldName: 'add-log',
     files: [
       { fileName: 'no-print-log.coffee', cursorPosition: { line: 0, character: 0 } },
       { fileName: 'no-print-log.cpp', cursorPosition: { line: 0, character: 12 } },

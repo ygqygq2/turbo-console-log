@@ -5,7 +5,7 @@ export type CursorPosition = {
 
 export type TestInfo = {
   testName: string;
-  workspaceName: string;
+  workspaceFoldName: string;
   files: {
     fileName: string;
     cursorPosition: CursorPosition;

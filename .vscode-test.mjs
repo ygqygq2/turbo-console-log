@@ -2,7 +2,7 @@
 import { defineConfig } from '@vscode/test-cli';
 import path from 'path';
 
-const workspacePath = path.resolve('sampleWorkspace', 'test.code-workspace');
+const workspacePath = path.resolve('sampleWorkspace', 'default-settings', 'test.code-workspace');
 
 // suiteTests 使用 vscode-test/mocha 测试，当前无法直接支持 ts,它需要编译成js
 // unitTests 使用 vitest 测试，直接使用 ts
