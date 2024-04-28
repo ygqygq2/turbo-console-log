@@ -64,23 +64,26 @@ Properties:
 
 ## Support languages
 
-- javascript
-- typescript
-- php
-- csharp
 - c++
-- rust
-- kotlin
-- scala
-- python
-- ruby
-- perl
-- go
-- java
-- swift
-- shellscript
-- lua
+- csharp
 - coffeescript
+- dart
+- go
+- groovy
+- java
+- javascript
+- kotlin
+- lua
+- perl
+- php
+- python
+- r
+- ruby
+- rust
+- scala
+- shellscript
+- swift
+- typescript
 
 ## License
 

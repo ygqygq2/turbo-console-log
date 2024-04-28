@@ -27,6 +27,11 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'coffeescript':
         return 'console.log';
       case 'python':
+      case 'swift':
+      case 'perl':
+      case 'lua':
+      case 'r':
+      case 'dart':
         return 'print';
       case 'go':
         return 'fmt.Println';
@@ -36,21 +41,17 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
         return 'echo';
       case 'ruby':
         return 'puts';
-      case 'swift':
-        return 'print';
       case 'csharp':
         return 'Console.WriteLine';
       case 'shellscript':
         return 'echo';
-      case 'perl':
-      case 'lua':
-        return 'print';
       case 'cpp':
         return 'std::cout';
       case 'rust':
         return 'println!';
       case 'kotlin':
       case 'scala':
+      case 'groovy':
         return 'println';
       default:
         return 'console.log';
@@ -72,6 +73,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
         return `${printFunction}(${variableName})${semicolon}`;
       case 'csharp':
       case 'java':
+      case 'rust':
+      case 'dart':
         return `${printFunction}(${variableName});`;
       case 'python':
       case 'go':
@@ -96,11 +99,12 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'ruby':
       case 'shellscript':
       case 'coffeescript':
+      case 'groovy':
         return `${printFunction} ${variableName}`;
       case 'cpp':
         return `${printFunction} << ${variableName} << std::endl;`;
-      case 'rust':
-        return `${printFunction}(${variableName});`;
+      case 'r':
+        return `${printFunction}(paste(${variableName}))`;
       default:
         return `${printFunction}(${variableName})`;
     }
@@ -118,6 +122,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'java':
       case 'go':
       case 'swift':
+      case 'dart':
+      case 'groovy':
         return '//';
       case 'python':
       case 'ruby':
@@ -125,6 +131,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'shellscript':
       case 'coffeescript':
       case 'php':
+      case 'r':
         return '#';
       case 'lua':
         return '--';
@@ -152,6 +159,9 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'perl':
       case 'php':
       case 'cpp':
+      case 'dart':
+      case 'r':
+      case 'groovy':
         return ' ';
       case 'rust':
         return ' {}';
@@ -169,6 +179,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'python':
       case 'rust':
       case 'lua':
+      case 'r':
         return ', ';
       case 'java':
       case 'kotlin':
@@ -176,6 +187,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'csharp':
       case 'coffeescript':
       case 'ruby':
+      case 'dart':
+      case 'groovy':
         return ' + ';
       case 'shellscript':
         return ' ';
@@ -205,6 +218,9 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'scala':
       case 'lua':
       case 'coffeescript':
+      case 'dart':
+      case 'groovy':
+      case 'r':
         return `${variableName}`;
       case 'perl':
       case 'php':
