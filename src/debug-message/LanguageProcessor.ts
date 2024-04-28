@@ -149,6 +149,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'python':
       case 'lua':
       case 'shellscript':
+      case 'r':
         return '';
       case 'java':
       case 'kotlin':
@@ -160,7 +161,6 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'php':
       case 'cpp':
       case 'dart':
-      case 'r':
       case 'groovy':
         return ' ';
       case 'rust':
