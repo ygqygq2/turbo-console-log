@@ -180,7 +180,6 @@
     "@vitest/coverage-v8": "^1.5.2",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.3.9",
-    "chai": "^5.1.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.20.2",
     "eslint": "^9.1.1",
