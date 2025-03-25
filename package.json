@@ -202,7 +202,7 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.7.1",
-    "vite": "^5.2.10",
+    "vite": "^5.4.15",
     "vitest": "^1.5.2"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
