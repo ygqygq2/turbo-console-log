@@ -61,7 +61,7 @@ describe('GeneralLanguageProcessor', () => {
                 expectedResult = `${logFunctionByLanguageId || logFunction[languageId]} ${variableName};`;
                 break;
               case 'perl':
-                expectedResult = `${logFunctionByLanguageId || logFunction[languageId]} ${variableName};\n`;
+                expectedResult = `${logFunctionByLanguageId || logFunction[languageId]} ${variableName};`;
                 break;
               case 'ruby':
               case 'shellscript':
