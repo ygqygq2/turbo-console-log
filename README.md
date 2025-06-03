@@ -64,6 +64,7 @@ Properties:
 
 ## Support languages
 
+- c
 - c++
 - csharp
 - coffeescript

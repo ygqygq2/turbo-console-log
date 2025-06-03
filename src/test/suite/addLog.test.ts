@@ -6,6 +6,7 @@ const testInfo: TestInfo = [
     testName: 'addLog',
     workspaceFoldName: 'add-log',
     files: [
+      { fileName: 'no-print-log.c', cursorPosition: { line: 0, character: 5 } },
       { fileName: 'no-print-log.coffee', cursorPosition: { line: 0, character: 0 } },
       { fileName: 'no-print-log.cpp', cursorPosition: { line: 0, character: 12 } },
       { fileName: 'no-print-log.cs', cursorPosition: { line: 0, character: 7 } },
@@ -16,8 +17,8 @@ const testInfo: TestInfo = [
       { fileName: 'no-print-log.js', cursorPosition: { line: 0, character: 6 } },
       // { fileName: 'no-print-log.kt', cursorPosition: { line: 0, character: 4 } },
       { fileName: 'no-print-log.lua', cursorPosition: { line: 0, character: 6 } },
-      // { fileName: 'no-print-log.php', cursorPosition: { line: 0, character: 6 } },
-      // { fileName: 'no-print-log.pl', cursorPosition: { line: 0, character: 3 } },
+      { fileName: 'no-print-log.php', cursorPosition: { line: 0, character: 0 } },
+      { fileName: 'no-print-log.pl', cursorPosition: { line: 0, character: 3 } },
       { fileName: 'no-print-log.py', cursorPosition: { line: 0, character: 0 } },
       { fileName: 'no-print-log.r', cursorPosition: { line: 0, character: 0 } },
       { fileName: 'no-print-log.rb', cursorPosition: { line: 0, character: 0 } },

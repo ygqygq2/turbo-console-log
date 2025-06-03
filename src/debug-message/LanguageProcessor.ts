@@ -22,6 +22,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
 
   public getPrintString(): string {
     switch (this.languageId) {
+      case 'c':
+        return 'printf';
       case 'javascript':
       case 'typescript':
       case 'coffeescript':
@@ -67,6 +69,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     const printFunction = logFunctionByLanguageId || this.getPrintString();
     const isSingleQuote = quote === "'";
     switch (this.languageId) {
+      case 'c':
+        return `${printFunction}(${variableName});`;
       case 'javascript':
       case 'typescript':
       case 'swift':
@@ -92,7 +96,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'perl': {
         if (!isSingleQuote) {
           const escapedVariableName = processVariableName(variableName);
-          return `${printFunction} ${escapedVariableName};\n`;
+          return `${printFunction} ${escapedVariableName};`;
         }
         return `${printFunction} ${variableName};`;
       }
@@ -114,6 +118,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
+      case 'c':
       case 'csharp':
       case 'cpp':
       case 'rust':
@@ -165,6 +170,8 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
         return ' ';
       case 'rust':
         return ' {}';
+      case 'c':
+        return ' %s\\n';
       default:
         return '';
     }
@@ -174,6 +181,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
+      case 'c':
       case 'go':
       case 'swift':
       case 'python':
@@ -206,6 +214,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     switch (this.languageId) {
       case 'javascript':
       case 'typescript':
+      case 'c':
       case 'go':
       case 'java':
       case 'csharp':

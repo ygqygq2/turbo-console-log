@@ -2,6 +2,12 @@
 
 All notable changes to the "turbo-console-log" extension will be documented in this file.
 
+# [3.1.0]
+
+## 新增功能 🌱
+
+- feat: 增加 c 支持
+
 # [3.0.9]
 
 ## 新增功能 🌱

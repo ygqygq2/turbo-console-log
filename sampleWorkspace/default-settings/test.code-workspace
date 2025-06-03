@@ -3,6 +3,10 @@
     { "path": "add-log" },
   ],
   "settings": {
+    "files.associations": {
+      "*.kt": "kotlin",
+      "*.scala": "scala"
+    },
     "mathiasfrohlich.kotlin": true,
     "scala-lang.scala": true
   }
