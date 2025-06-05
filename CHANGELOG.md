@@ -16,7 +16,7 @@ All notable changes to the "turbo-console-log" extension will be documented in t
 
 # [3.0.8]
 
-## 功能优化
+## 功能优化 🚀
 
 - refactor: 优化打印语句
 
