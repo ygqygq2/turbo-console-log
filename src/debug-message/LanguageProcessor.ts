@@ -14,10 +14,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
 
   // 根据 languageId 获取对应的 logFunction
   public getLogFunction(logFunction: ExtensionProperties['logFunction']): string {
-    if (Object.keys(logFunction).length !== 0) {
-      return logFunction[this.languageId] || this.getPrintString();
-    }
-    return this.getPrintString();
+    return logFunction[this.languageId] || this.getPrintString();
   }
 
   public getPrintString(): string {
