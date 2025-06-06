@@ -69,12 +69,11 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
     const printFunction = logFunctionByLanguageId || this.getPrintString();
     const isSingleQuote = quote === "'";
     switch (this.languageId) {
-      case 'c':
-        return `${printFunction}(${variableName});`;
       case 'javascript':
       case 'typescript':
       case 'swift':
         return `${printFunction}(${variableName})${semicolon}`;
+      case 'c':
       case 'csharp':
       case 'java':
       case 'rust':
@@ -86,13 +85,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'scala':
       case 'lua':
         return `${printFunction}(${variableName})`;
-      case 'php': {
-        if (!isSingleQuote) {
-          const escapedVariableName = processVariableName(variableName);
-          return `${printFunction} ${escapedVariableName};`;
-        }
-        return `${printFunction} ${variableName};`;
-      }
+      case 'php':
       case 'perl': {
         if (!isSingleQuote) {
           const escapedVariableName = processVariableName(variableName);
@@ -110,7 +103,7 @@ export class GeneralLanguageProcessor implements LanguageProcessor {
       case 'r':
         return `${printFunction}(paste(${variableName}))`;
       default:
-        return `${printFunction}(${variableName})`;
+        return `${printFunction}(${variableName})${semicolon}`;
     }
   }
 
